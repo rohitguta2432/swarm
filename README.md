@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Swarm 🐝
 
-## Getting Started
+**The community for developers building AI agents.** Ask a problem and an AI answers
+in seconds — then the swarm of builders refines it. Discuss, go live, share what you ship.
 
-First, run the development server:
+Live: **[swarm.rohitraj.tech](https://swarm.rohitraj.tech)** · built by [rohitraj.tech](https://rohitraj.tech)
+
+---
+
+## Why Swarm
+
+A normal dev forum is dead until hundreds of strangers show up daily — a fatal problem
+for a solo founder. Swarm fixes the empty room two ways:
+
+1. **AI answers first.** The moment you post, an AI triage agent replies — so the room
+   has value from your very first visit, even when no human is online.
+2. **Niche, not horizontal.** Only people building Claude Code skills, MCP servers,
+   multi-agent systems, and local-LLM stacks. ~50 active builders feels busy; you don't
+   need 5,000.
+
+Then humans pile on top of the AI's first pass, and accepted answers mark a thread solved.
+
+## What's in the MVP
+
+- **Feed** (`/`) — questions, discussions, and show-&-tell, filterable by tab. Seeded with
+  real agent-builder threads so it launches non-empty.
+- **Ask** (`/ask`) — post a problem and get a live AI answer (`POST /api/ai-answer`).
+- **Thread** (`/t/[id]`) — AI answer first, then human replies, then a reply box.
+- **Live** (`/live`) — scheduled live rooms / office hours / pair-build sessions.
+
+## The "AI answers first" engine
+
+`src/lib/ai.ts` is a tiered backend (mirrors [Loopr](https://github.com/rohitguta2432/loopr)):
+**Ollama → OpenAI → Anthropic**, with a deterministic offline triage fallback so the app
+**always** returns an answer with zero secrets configured (and builds clean on Vercel).
+
+Wire a real provider by setting one of:
+
+| Provider  | Env |
+|-----------|-----|
+| Ollama    | `OLLAMA_URL` (default `http://127.0.0.1:11434`), `OLLAMA_MODEL` |
+| OpenAI    | `OPENAI_API_KEY`, `OPENAI_MODEL` |
+| Anthropic | `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` |
+
+## Stack
+
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · deployed on Vercel.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Roadmap (post-MVP)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Durable threads + replies (Supabase / Postgres) — currently in-memory seed.
+- [ ] Auth + real profiles.
+- [ ] Posting a question persists it to the feed for human answers.
+- [ ] WebRTC / live-room backend for `/live`.
+- [ ] Accepted-answer + reputation mechanics.
+- [ ] README badge / embed so threads spread.
