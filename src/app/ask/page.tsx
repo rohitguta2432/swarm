@@ -38,16 +38,16 @@ export default function AskPage() {
   }
 
   const inputCls =
-    "w-full rounded-xl border border-border bg-surface p-3 text-[16px] text-ink shadow-[var(--shadow-xs)] outline-none placeholder:text-ink-3 focus:border-ink-3";
+    "w-full border-2 border-ink bg-surface p-3 text-[16px] text-ink outline-none transition-shadow placeholder:text-ink-3 focus:shadow-[var(--shadow-hard-sm)]";
 
   return (
     <div className="space-y-6">
-      <Link href="/" className="text-sm text-ink-3 transition-colors hover:text-accent-ink">
+      <Link href="/" className="text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink">
         ← Back to the swarm
       </Link>
 
       <div className="space-y-2">
-        <h1 className="text-[24px] font-semibold tracking-[-0.01em] text-ink">Ask the swarm</h1>
+        <h1 className="font-display text-[28px] font-bold tracking-[-0.02em] text-ink">Ask the swarm</h1>
         <p className="text-[15px] text-ink-2">
           You&apos;ll get an <span className="font-medium text-accent-ink">instant AI answer</span>{" "}
           first — then real builders refine it. Be specific: paste the error, the config, the log line.
@@ -74,7 +74,7 @@ export default function AskPage() {
               type="button"
               key={t}
               onClick={() => setBody((b) => (b.includes(`#${t}`) ? b : `${b}${b ? " " : ""}#${t}`))}
-              className="min-h-[36px] rounded-md border border-border bg-surface px-2.5 text-[13px] text-ink-2 transition-colors hover:border-accent-ink hover:text-ink"
+              className="min-h-[36px] border-2 border-ink bg-surface px-2.5 text-[13px] font-semibold text-ink-2 transition-colors hover:bg-accent hover:text-ink"
             >
               #{t}
             </button>
@@ -83,7 +83,7 @@ export default function AskPage() {
         <button
           type="submit"
           disabled={loading || !title.trim()}
-          className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-accent px-4 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover disabled:opacity-40"
+          className="inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)] disabled:opacity-40 disabled:shadow-none"
         >
           {loading ? "Asking the swarm…" : "Get an instant answer"}
           {!loading && <Icon name="arrow-right" size={16} />}
@@ -91,25 +91,25 @@ export default function AskPage() {
       </form>
 
       {error && (
-        <div className="rounded-xl border border-[#f0c9c9] bg-danger-bg p-4 text-sm text-danger">
+        <div className="border-2 border-danger bg-danger-bg p-4 text-sm font-medium text-danger">
           {error}
         </div>
       )}
 
       {loading && (
-        <div className="rounded-xl border border-[#fbe3b3] bg-accent-subtle p-4 text-sm text-accent-ink">
+        <div className="border-2 border-ink bg-accent-subtle p-4 text-sm font-medium text-accent-ink">
           Swarm AI is drafting a first answer…
         </div>
       )}
 
       {answer && (
         <div className="space-y-3">
-          <div className="rounded-r-xl border border-[#fbe3b3] border-l-[3px] border-l-accent bg-accent-subtle p-4 shadow-[var(--shadow-xs)] sm:p-5">
+          <div className="border-2 border-ink border-l-[6px] border-l-accent bg-accent-subtle p-4 shadow-[var(--shadow-hard)] sm:p-5">
             <div className="mb-3 flex flex-wrap items-center gap-2 text-[12px]">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#fef3c7] text-accent-ink">
                 <Icon name="spark" size={14} />
               </span>
-              <span className="rounded-full bg-[#fef3c7] px-2 py-0.5 font-medium text-[#78350f]">
+              <span className="border-[1.5px] border-ink bg-[#fef3c7] px-2 py-0.5 font-bold uppercase tracking-wide text-[#78350f]">
                 Swarm AI · answered first
               </span>
               <span className="text-ink-3">

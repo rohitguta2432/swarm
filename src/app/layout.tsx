@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import MobileAskBar from "@/components/MobileAskBar";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Swarm — ask, go live, ship together · for agent builders",
@@ -22,12 +27,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased`}>
       <body className="min-h-full">
         <Nav />
         <main className="mx-auto max-w-3xl px-4 pb-24 pt-7 sm:px-6 sm:pb-12 sm:pt-9">{children}</main>
         <footer className="mx-auto max-w-3xl px-4 pb-24 sm:px-6 sm:pb-10">
-          <div className="border-t border-border pt-6 text-[13px] text-ink-3">
+          <div className="border-t-2 border-ink pt-6 text-[13px] text-ink-3">
             Swarm · a home for agent builders · built by{" "}
             <a
               href="https://rohitraj.tech"

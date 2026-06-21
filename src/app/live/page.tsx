@@ -16,17 +16,17 @@ const STATUS = {
 export default function LivePage() {
   return (
     <div className="space-y-6">
-      <Link href="/" className="text-sm text-ink-3 transition-colors hover:text-accent-ink">
+      <Link href="/" className="text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink">
         ← Back to the swarm
       </Link>
 
       <div className="space-y-2">
-        <h1 className="text-[24px] font-semibold tracking-[-0.01em] text-ink">Live rooms</h1>
+        <h1 className="font-display text-[28px] font-bold tracking-[-0.02em] text-ink">Live rooms</h1>
         <p className="max-w-xl text-[15px] text-ink-2">
           Go live with a problem — screen-share a bug, run weekly office hours, or pair-build an agent
           in real time. Scheduled rooms keep the swarm meeting even before it&apos;s a crowd.
         </p>
-        <button className="mt-1 inline-flex h-11 items-center gap-1.5 rounded-lg bg-accent px-4 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover">
+        <button className="mt-1 inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)]">
           <Icon name="dot" size={14} /> Go live with a problem
         </button>
       </div>
@@ -37,23 +37,23 @@ export default function LivePage() {
           return (
             <div
               key={r.title}
-              className="flex flex-col items-start gap-3 rounded-xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:flex-row sm:items-center"
+              className="flex flex-col items-start gap-3 border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:flex-row sm:items-center"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 text-[12px]">
-                  <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-medium ${s.cls}`}>
+                  <span className={`inline-flex items-center gap-1.5 border-[1.5px] border-ink px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide ${s.cls}`}>
                     <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
                     {s.label}
                   </span>
                   <span className="text-ink-3">{r.when}</span>
                 </div>
-                <h3 className="mt-1.5 truncate text-[15px] font-medium text-ink">{r.title}</h3>
+                <h3 className="mt-1.5 truncate text-[15px] font-bold text-ink">{r.title}</h3>
                 <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-ink-3">
                   <span>hosted by {r.host}</span>
                   {r.status === "live" && <span className="text-ink-2">· {r.here} here now</span>}
-                  <span className="flex gap-1.5">
+                  <span className="flex gap-2">
                     {r.tags.map((t) => (
-                      <span key={t} className="rounded-md bg-surface-muted px-1.5 py-0.5 text-ink-2">
+                      <span key={t} className="font-medium text-ink-2 before:text-ink-3 before:content-['#']">
                         {t}
                       </span>
                     ))}
@@ -61,10 +61,10 @@ export default function LivePage() {
                 </div>
               </div>
               <button
-                className={`h-11 w-full shrink-0 rounded-lg px-4 text-sm font-semibold transition-colors sm:w-auto ${
+                className={`h-11 w-full shrink-0 border-2 border-ink px-4 text-sm font-bold transition-colors sm:w-auto ${
                   r.status === "live"
                     ? "bg-accent text-ink hover:bg-accent-hover"
-                    : "border border-border text-ink hover:bg-surface-muted"
+                    : "bg-surface text-ink hover:bg-surface-muted"
                 }`}
               >
                 {r.status === "live" ? "Join" : "Remind me"}

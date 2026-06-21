@@ -16,35 +16,35 @@ export default function ThreadCard({ thread }: { thread: Thread }) {
   return (
     <Link
       href={`/t/${thread.id}`}
-      className="group relative flex gap-3 overflow-hidden rounded-xl border border-border bg-surface p-3 shadow-[var(--shadow-xs)] transition-colors before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-accent before:opacity-0 before:transition-opacity hover:bg-surface-muted group-hover:before:opacity-100 hover:before:opacity-100 sm:p-3.5"
+      className="group relative flex gap-3 border-2 border-ink bg-surface p-3.5 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]"
     >
       {/* vote gutter */}
       <div className="flex w-9 shrink-0 flex-col items-center pt-0.5 text-ink-3 sm:w-11">
         <Icon name="chevron-up" size={16} />
-        <span className="text-[15px] font-medium text-ink">{thread.upvotes}</span>
-        <span className="text-[11px]">votes</span>
+        <span className="text-[16px] font-extrabold text-ink">{thread.upvotes}</span>
+        <span className="text-[10px] uppercase tracking-wide">votes</span>
       </div>
 
       {/* content */}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px]">
-          <span className={`rounded-md px-1.5 py-0.5 font-medium ${KIND_STYLE[thread.kind]}`}>
+          <span className={`border-[1.5px] border-ink px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${KIND_STYLE[thread.kind]}`}>
             {KIND_LABEL[thread.kind]}
           </span>
           {solved && (
-            <span className="inline-flex items-center gap-1 font-medium text-success">
+            <span className="inline-flex items-center gap-1 font-bold uppercase tracking-wide text-success">
               <Icon name="check" size={13} /> Solved
             </span>
           )}
           {thread.aiAnswer && (
-            <span className="inline-flex items-center gap-1 font-medium text-accent-ink">
+            <span className="inline-flex items-center gap-1 font-bold uppercase tracking-wide text-accent-ink">
               <Icon name="spark" size={13} /> AI answered
             </span>
           )}
           <span className="ml-auto text-ink-3">{thread.createdAt}</span>
         </div>
 
-        <h3 className="mt-1.5 truncate text-[15px] font-medium leading-snug text-ink">
+        <h3 className="mt-2 truncate text-[15px] font-bold leading-snug text-ink">
           {thread.title}
         </h3>
         <p className="mt-0.5 line-clamp-1 text-[13px] text-ink-2">{thread.body}</p>
@@ -58,9 +58,9 @@ export default function ThreadCard({ thread }: { thread: Thread }) {
             <Icon name="message" size={13} />
             {thread.replies.length}
           </span>
-          <span className="flex flex-wrap gap-1.5">
+          <span className="flex flex-wrap gap-2">
             {thread.tags.slice(0, 3).map((t) => (
-              <span key={t} className="rounded-md bg-surface-muted px-1.5 py-0.5 text-ink-2">
+              <span key={t} className="font-medium text-ink-2 before:text-ink-3 before:content-['#']">
                 {t}
               </span>
             ))}

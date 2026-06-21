@@ -21,9 +21,9 @@ export default function NavLinks() {
             key={l.href}
             href={l.href}
             aria-current={active ? "page" : undefined}
-            className={`relative rounded-md px-2.5 py-1.5 transition-colors ${
+            className={`relative px-2.5 py-1.5 font-semibold transition-colors ${
               active
-                ? "font-semibold text-ink after:absolute after:inset-x-2.5 after:-bottom-px after:h-0.5 after:rounded-full after:bg-accent-ink"
+                ? "text-ink after:absolute after:inset-x-2.5 after:-bottom-px after:h-[3px] after:bg-accent"
                 : "text-ink-2 hover:text-ink"
             }`}
           >

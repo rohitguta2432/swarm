@@ -60,7 +60,7 @@ export default function MobileMenu({ user }: { user: User }) {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            className="absolute inset-x-0 top-0 rounded-b-2xl border-b border-border bg-surface p-3 shadow-[var(--shadow-md)]"
+            className="absolute inset-x-0 top-0 border-b-2 border-ink bg-surface p-3 shadow-[var(--shadow-md)]"
           >
             <div className="mb-1 flex items-center justify-between px-1">
               <span className="text-sm font-semibold text-ink-2">Menu</span>
@@ -92,7 +92,7 @@ export default function MobileMenu({ user }: { user: User }) {
                 <form action={signOutAction}>
                   <button
                     type="submit"
-                    className="min-h-[44px] rounded-lg border border-border px-3 text-sm font-medium text-ink-2 hover:bg-surface-muted"
+                    className="min-h-[44px] border-2 border-ink px-3 text-sm font-bold text-ink hover:bg-surface-muted"
                   >
                     Sign out
                   </button>

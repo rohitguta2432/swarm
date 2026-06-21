@@ -24,8 +24,11 @@ export default async function Home({
     <div className="space-y-7 sm:space-y-9">
       {/* Hero — demonstrates the wedge, doesn't just describe it */}
       <section className="space-y-3">
-        <h1 className="text-[28px] font-bold leading-tight tracking-[-0.02em] text-ink sm:text-[40px]">
-          Where agent builders <span className="text-accent-ink">ask, go live, and ship</span>.
+        <h1 className="font-display text-[34px] font-bold leading-[1.12] tracking-[-0.035em] text-ink sm:text-[52px] sm:leading-[1.05]">
+          Where agent builders{" "}
+          <span className="box-decoration-clone bg-accent px-1.5 text-ink">ask</span>,{" "}
+          <span className="box-decoration-clone bg-accent px-1.5 text-ink">go&nbsp;live</span>, and{" "}
+          <span className="box-decoration-clone bg-accent px-1.5 text-ink">ship</span>.
         </h1>
         <p className="max-w-xl text-[15px] leading-relaxed text-ink-2">
           Post a problem and an AI answers in seconds — then the swarm of builders refines it.
@@ -35,17 +38,17 @@ export default async function Home({
         <div className="flex flex-wrap items-center gap-3 pt-1">
           <Link
             href="/ask"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+            className="inline-flex items-center gap-1.5 border-2 border-ink bg-accent px-4 py-2.5 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)]"
           >
             Ask the swarm <Icon name="arrow-right" size={16} />
           </Link>
           <Link
             href="/live"
-            className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-muted"
+            className="border-2 border-ink bg-surface px-4 py-2.5 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
           >
             Join a live room
           </Link>
-          <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-3">
+          <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink-2">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
@@ -55,20 +58,22 @@ export default async function Home({
         </div>
       </section>
 
-      {/* Segmented tab control */}
+      {/* Segmented tab control — hard-bordered, solid-black active */}
       <div className="-mx-4 overflow-x-auto px-4 no-scrollbar sm:mx-0 sm:px-0">
-        <div className="inline-flex gap-1 rounded-lg border border-border bg-surface-muted p-1">
-          {TABS.map((t) => {
+        <div className="inline-flex border-2 border-ink bg-surface shadow-[var(--shadow-hard-sm)]">
+          {TABS.map((t, i) => {
             const isActive = t.key === active;
             return (
               <Link
                 key={t.key}
                 href={t.key === "all" ? "/" : `/?tab=${t.key}`}
                 aria-current={isActive ? "page" : undefined}
-                className={`whitespace-nowrap rounded-md px-3 py-2 text-[13px] transition-colors ${
+                className={`whitespace-nowrap px-4 py-2 text-[13px] font-bold transition-colors ${
+                  i > 0 ? "border-l-2 border-ink" : ""
+                } ${
                   isActive
-                    ? "bg-surface font-semibold text-ink shadow-[var(--shadow-xs)]"
-                    : "font-medium text-ink-2 hover:text-ink"
+                    ? "bg-ink text-surface"
+                    : "text-ink-2 hover:bg-surface-muted hover:text-ink"
                 }`}
               >
                 {t.label}
@@ -79,7 +84,7 @@ export default async function Home({
       </div>
 
       {/* Feed */}
-      <div className="space-y-2.5">
+      <div className="space-y-3.5">
         {threads.map((thread) => (
           <ThreadCard key={thread.id} thread={thread} />
         ))}

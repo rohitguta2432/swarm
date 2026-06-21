@@ -1,22 +1,23 @@
 @import "tailwindcss";
 
-/* ── Swarm light design system (researched) ───────────────────────────
-   Two-surface system: off-white canvas under pure-white cards + hairline.
-   Amber is split: --color-accent = FILLS only; --color-accent-ink = amber TYPE.
-   (brand amber #F59E0B is only 2.15:1 on white — never use it as text.) */
+/* ── Swarm — Bold Editorial Light ─────────────────────────────────────
+   Confident light theme: warm off-white canvas, hard 2px ink borders,
+   offset (non-blur) shadows, amber highlight blocks, display headings.
+   Amber stays split: --color-accent = FILLS only; --color-accent-ink = TYPE
+   (brand amber #F59E0B is only 2.15:1 on white — never use it as text). */
 @theme {
-  --color-canvas: #fbfbfa;
+  --color-canvas: #fbfbf6;
   --color-surface: #ffffff;
   --color-surface-muted: #f4f3ee;
   --color-border: #e6e4dd;
 
-  --color-ink: #1c1b19;   /* primary text  ~16.6:1 */
-  --color-ink-2: #52525b; /* secondary     ~7.5:1  */
-  --color-ink-3: #646469; /* muted/meta    ~5.3:1 on muted surface */
+  --color-ink: #111111;   /* primary text + hard borders */
+  --color-ink-2: #555555; /* secondary  ~7:1 */
+  --color-ink-3: #7a7a72; /* muted/meta */
 
-  --color-accent: #f59e0b;        /* fills / CTA / AI rail / logo dot */
+  --color-accent: #f59e0b;        /* fills / CTA / highlight blocks / logo */
   --color-accent-hover: #d97706;  /* fills only */
-  --color-accent-ink: #b45309;    /* amber TEXT / links / borders  5.0:1 */
+  --color-accent-ink: #b45309;    /* amber TEXT / links  5.0:1 */
   --color-accent-subtle: #fef6e7; /* AI block tint */
 
   --color-success: #15803d;
@@ -34,6 +35,7 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-space-grotesk);
 }
 
 :root {
@@ -41,6 +43,10 @@
   --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 1px rgba(16, 24, 40, 0.03);
   --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
   --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08), 0 2px 6px rgba(16, 24, 40, 0.05);
+  /* Bold editorial: hard offset shadows (no blur) */
+  --shadow-hard-sm: 3px 3px 0 var(--color-ink);
+  --shadow-hard: 4px 4px 0 var(--color-ink);
+  --shadow-hard-amber: 6px 6px 0 var(--color-accent);
 }
 
 html {
@@ -56,22 +62,19 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Dev-tool dot-grid — visible ONLY in the page gutters, faded behind the
-   max-w-3xl reading column so the off-white canvas reads intentional. */
+/* Full-canvas dot grid — subtle dev-tool texture under the editorial layout. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -10;
   pointer-events: none;
-  background-image: radial-gradient(circle, rgba(28, 27, 25, 0.06) 1px, transparent 1px);
-  background-size: 24px 24px;
-  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(50% - 392px), transparent calc(50% - 392px), transparent calc(50% + 392px), #000 calc(50% + 392px), #000 100%);
-  mask-image: linear-gradient(90deg, #000 0, #000 calc(50% - 392px), transparent calc(50% - 392px), transparent calc(50% + 392px), #000 calc(50% + 392px), #000 100%);
+  background-image: radial-gradient(circle, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 ::selection {
-  background: rgba(245, 158, 11, 0.22);
+  background: rgba(245, 158, 11, 0.28);
 }
 
 /* One global focus ring — blue, distinct from amber, never invisible. */

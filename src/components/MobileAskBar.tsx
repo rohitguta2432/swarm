@@ -13,11 +13,11 @@ export default function MobileAskBar() {
   if (hide) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/90 backdrop-blur sm:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-30 border-t-2 border-ink bg-canvas/92 backdrop-blur sm:hidden">
       <div className="mx-auto max-w-3xl px-4 pb-[env(safe-area-inset-bottom)]">
         <Link
           href="/ask"
-          className="my-2 flex h-12 items-center justify-center gap-1.5 rounded-xl bg-accent font-semibold text-ink transition-colors hover:bg-accent-hover"
+          className="my-2 flex h-12 items-center justify-center gap-1.5 border-2 border-ink bg-accent font-bold text-ink transition-colors hover:bg-accent-hover"
         >
           Ask the swarm <Icon name="arrow-right" size={17} />
         </Link>

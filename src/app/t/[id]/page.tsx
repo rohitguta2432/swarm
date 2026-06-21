@@ -35,31 +35,31 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
 
   return (
     <article>
-      <Link href="/" className="text-sm text-ink-3 transition-colors hover:text-accent-ink">
+      <Link href="/" className="text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink">
         ← Back to the swarm
       </Link>
 
       {/* Question */}
-      <header className="mt-4 flex gap-3 rounded-xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:p-5">
+      <header className="mt-4 flex gap-3 border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:p-5">
         <div className="hidden w-11 shrink-0 flex-col items-center pt-0.5 text-ink-3 sm:flex">
           <Icon name="chevron-up" size={16} />
-          <span className="text-[15px] font-medium text-ink">{thread.upvotes}</span>
-          <span className="text-[11px]">votes</span>
+          <span className="text-[16px] font-extrabold text-ink">{thread.upvotes}</span>
+          <span className="text-[10px] uppercase tracking-wide">votes</span>
         </div>
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex items-center gap-2 text-[12px]">
-            <span className="rounded-md bg-surface-muted px-1.5 py-0.5 font-medium text-ink-2">
+            <span className="border-[1.5px] border-ink bg-surface-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink-2">
               {KIND_LABEL[thread.kind]}
             </span>
             <span className="text-ink-3">asked {thread.createdAt} by {thread.author}</span>
           </div>
-          <h1 className="text-[22px] font-semibold leading-tight tracking-[-0.005em] text-ink">
+          <h1 className="font-display text-[26px] font-bold leading-tight tracking-[-0.02em] text-ink">
             {thread.title}
           </h1>
           <p className="whitespace-pre-wrap text-[16px] leading-relaxed text-ink-2">{thread.body}</p>
           <div className="flex flex-wrap items-center gap-2 text-[12px]">
             {thread.tags.map((t) => (
-              <span key={t} className="rounded-md bg-surface-muted px-1.5 py-0.5 text-ink-2">
+              <span key={t} className="font-medium text-ink-2 before:text-ink-3 before:content-['#']">
                 {t}
               </span>
             ))}
@@ -76,10 +76,10 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
 
       {/* LARGE gap + labeled divider — humans refine */}
       <div className="mt-9 mb-4 flex items-center gap-3">
-        <h2 className="text-sm font-medium text-ink-2">
+        <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
           {replies.length} {replies.length === 1 ? "reply" : "replies"} from the swarm
         </h2>
-        <span className="h-px flex-1 bg-border" />
+        <span className="h-0.5 flex-1 bg-ink" />
       </div>
 
       <section className="space-y-3">
@@ -87,20 +87,20 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
           r.isAccepted ? (
             <div
               key={r.id}
-              className="rounded-r-xl border border-[#bfe3c9] border-l-[3px] border-l-success bg-success-bg p-4"
+              className="border-2 border-ink border-l-[6px] border-l-success bg-success-bg p-4 shadow-[var(--shadow-hard)]"
             >
               <div className="mb-2 flex items-center gap-2 text-[12px] text-ink-3">
                 <Avatar name={r.author} hue={r.avatarHue} size={20} image={r.image} />
                 <span className="font-medium text-ink">{r.author}</span>
                 <span>· {r.createdAt}</span>
-                <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#d6f0df] px-2 py-0.5 font-medium text-success">
+                <span className="ml-auto inline-flex items-center gap-1 border-[1.5px] border-ink bg-[#d6f0df] px-2 py-0.5 font-bold uppercase tracking-wide text-success">
                   <Icon name="check" size={13} /> Accepted answer
                 </span>
               </div>
               <Markish text={r.body} className="text-[15px] leading-relaxed text-[#0b3d2e]" />
             </div>
           ) : (
-            <div key={r.id} className="rounded-xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)]">
+            <div key={r.id} className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)]">
               <div className="mb-2 flex items-center gap-2 text-[12px] text-ink-3">
                 <Avatar name={r.author} hue={r.avatarHue} size={20} image={r.image} />
                 <span className="font-medium text-ink">{r.author}</span>
@@ -117,12 +117,12 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
         {session?.user ? (
           <Composer threadId={id} />
         ) : (
-          <div className="rounded-xl border border-border bg-surface p-5 text-center shadow-[var(--shadow-xs)]">
+          <div className="border-2 border-ink bg-surface p-5 text-center shadow-[var(--shadow-hard)]">
             <p className="mb-3 text-sm text-ink-2">Sign in to add your answer to the swarm.</p>
             <form action={signInWithGoogle} className="flex justify-center">
               <button
                 type="submit"
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-surface-muted"
+                className="inline-flex min-h-[44px] items-center gap-2 border-2 border-ink bg-surface px-4 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
               >
                 <GoogleGlyph /> Continue with Google
               </button>

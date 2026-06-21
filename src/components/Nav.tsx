@@ -11,14 +11,14 @@ export default async function Nav() {
   const user = session?.user;
 
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-surface/85 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b-2 border-ink bg-canvas/88 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-3xl items-center gap-2 px-4 sm:gap-3 sm:px-6">
         <MobileMenu user={user ? { name: user.name, image: user.image } : null} />
 
-        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight text-ink">
+        <Link href="/" className="flex items-center gap-2 font-display font-bold tracking-tight text-ink">
           <Logo />
-          <span className="text-[15px]">
-            Swarm<span className="text-accent">.</span>
+          <span className="text-[17px]">
+            Swarm<span className="text-accent-ink">.</span>
           </span>
         </Link>
 
@@ -27,18 +27,18 @@ export default async function Nav() {
         <div className="ml-auto flex items-center gap-2">
           <Link
             href="/ask"
-            className="hidden rounded-lg bg-accent px-3.5 py-1.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover sm:inline-flex"
+            className="hidden border-2 border-ink bg-ink px-3.5 py-1.5 text-sm font-bold text-surface transition-colors hover:bg-ink/90 sm:inline-flex"
           >
             Ask the swarm
           </Link>
 
           {user ? (
-            <div className="hidden items-center gap-2 sm:flex">
+            <div className="hidden items-center gap-2.5 sm:flex">
               <Avatar name={user.name ?? "you"} hue={40} size={28} image={user.image} />
               <form action={signOutAction}>
                 <button
                   type="submit"
-                  className="rounded-lg px-3 py-1.5 text-sm text-ink-2 transition-colors hover:bg-surface-muted"
+                  className="px-2 py-1.5 text-sm font-semibold text-ink-2 transition-colors hover:text-ink"
                 >
                   Sign out
                 </button>
@@ -48,7 +48,7 @@ export default async function Nav() {
             <form action={signInWithGoogle} className="hidden sm:block">
               <button
                 type="submit"
-                className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-ink-2 transition-colors hover:bg-surface-muted hover:text-ink"
+                className="border-2 border-ink px-3 py-1.5 text-sm font-bold text-ink transition-colors hover:bg-ink hover:text-surface"
               >
                 Sign in
               </button>
