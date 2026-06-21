@@ -1,7 +1,13 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import Avatar from "./Avatar";
+import { auth } from "@/auth";
+import { signInWithGoogle, signOutAction } from "@/app/auth-actions";
 
-export default function Nav() {
+export default async function Nav() {
+  const session = await auth();
+  const user = session?.user;
+
   return (
     <header className="sticky top-0 z-20 border-b border-white/10 bg-[#0a0a0b]/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-3xl items-center gap-4 px-4">
@@ -19,6 +25,7 @@ export default function Nav() {
             Live
           </Link>
         </nav>
+
         <div className="ml-auto flex items-center gap-2">
           <Link
             href="/ask"
@@ -26,6 +33,29 @@ export default function Nav() {
           >
             Ask the swarm
           </Link>
+
+          {user ? (
+            <div className="flex items-center gap-2">
+              <Avatar name={user.name ?? "you"} hue={40} size={28} image={user.image} />
+              <form action={signOutAction}>
+                <button
+                  type="submit"
+                  className="rounded-lg border border-white/15 px-3 py-1.5 text-sm text-zinc-300 transition hover:border-white/30 hover:text-zinc-100"
+                >
+                  Sign out
+                </button>
+              </form>
+            </div>
+          ) : (
+            <form action={signInWithGoogle}>
+              <button
+                type="submit"
+                className="rounded-lg border border-white/15 px-3 py-1.5 text-sm text-zinc-200 transition hover:border-white/30"
+              >
+                Sign in
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </header>

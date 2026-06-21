@@ -11,6 +11,7 @@ export type Reply = {
   body: string;
   createdAt: string; // pre-rendered relative label, e.g. "3h ago"
   isAccepted?: boolean;
+  image?: string | null; // profile image (e.g. Google avatar) when signed in
 };
 
 export type AiAnswer = {
