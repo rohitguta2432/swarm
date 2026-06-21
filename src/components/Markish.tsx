@@ -10,7 +10,7 @@ function inline(text: string, keyBase: string): ReactNode[] {
   return parts.map((p, i) => {
     if (p.startsWith("**") && p.endsWith("**")) {
       return (
-        <strong key={`${keyBase}-${i}`} className="font-semibold text-white">
+        <strong key={`${keyBase}-${i}`} className="font-semibold text-ink">
           {p.slice(2, -2)}
         </strong>
       );
@@ -19,7 +19,7 @@ function inline(text: string, keyBase: string): ReactNode[] {
       return (
         <code
           key={`${keyBase}-${i}`}
-          className="rounded bg-white/10 px-1 py-0.5 font-mono text-[0.85em] text-amber-200"
+          className="rounded border border-border bg-surface-muted px-1 py-0.5 font-mono text-[0.85em] text-accent-ink"
         >
           {p.slice(1, -1)}
         </code>
@@ -37,7 +37,7 @@ export default function Markish({ text, className }: { text: string; className?:
   const flush = (key: string) => {
     if (bullets.length) {
       blocks.push(
-        <ul key={key} className="my-2 list-disc space-y-1.5 pl-5 marker:text-amber-500/60">
+        <ul key={key} className="my-2 list-disc space-y-1.5 pl-5 marker:text-accent">
           {bullets.map((b, i) => (
             <li key={i}>{inline(b, `${key}-li-${i}`)}</li>
           ))}

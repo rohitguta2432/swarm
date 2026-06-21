@@ -9,6 +9,7 @@ import { signInWithGoogle } from "@/app/auth-actions";
 import Avatar from "@/components/Avatar";
 import AiAnswer from "@/components/AiAnswer";
 import Markish from "@/components/Markish";
+import Icon from "@/components/Icon";
 import Composer from "./Composer";
 
 export async function generateMetadata({
@@ -28,86 +29,107 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
   if (!thread) notFound();
 
   const [session, stored] = await Promise.all([auth(), getStoredReplies(id)]);
-  const replies = [...thread.replies, ...stored];
+  const replies = [...thread.replies, ...stored].sort(
+    (a, b) => (b.isAccepted ? 1 : 0) - (a.isAccepted ? 1 : 0),
+  );
 
   return (
-    <article className="space-y-6">
-      <Link href="/" className="text-sm text-zinc-500 hover:text-amber-400">
+    <article>
+      <Link href="/" className="text-sm text-ink-3 transition-colors hover:text-accent-ink">
         ← Back to the swarm
       </Link>
 
-      {/* Question / post */}
-      <header className="space-y-3">
-        <div className="flex items-center gap-2 text-xs">
-          <span className="rounded-full border border-white/15 bg-white/5 px-2 py-0.5 font-medium text-zinc-300">
-            {KIND_LABEL[thread.kind]}
-          </span>
-          <span className="text-zinc-500">{thread.createdAt}</span>
+      {/* Question */}
+      <header className="mt-4 flex gap-3 rounded-xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:p-5">
+        <div className="hidden w-11 shrink-0 flex-col items-center pt-0.5 text-ink-3 sm:flex">
+          <Icon name="chevron-up" size={16} />
+          <span className="text-[15px] font-medium text-ink">{thread.upvotes}</span>
+          <span className="text-[11px]">votes</span>
         </div>
-        <h1 className="text-2xl font-semibold leading-tight text-white">{thread.title}</h1>
-        <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-zinc-300">{thread.body}</p>
-        <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500">
-          <span className="flex items-center gap-1.5">
-            <Avatar name={thread.author} hue={thread.avatarHue} size={22} />
-            {thread.author}
-          </span>
-          <span>▲ {thread.upvotes}</span>
-          <span className="flex gap-1.5">
+        <div className="min-w-0 flex-1 space-y-3">
+          <div className="flex items-center gap-2 text-[12px]">
+            <span className="rounded-md bg-surface-muted px-1.5 py-0.5 font-medium text-ink-2">
+              {KIND_LABEL[thread.kind]}
+            </span>
+            <span className="text-ink-3">asked {thread.createdAt} by {thread.author}</span>
+          </div>
+          <h1 className="text-[22px] font-semibold leading-tight tracking-[-0.005em] text-ink">
+            {thread.title}
+          </h1>
+          <p className="whitespace-pre-wrap text-[16px] leading-relaxed text-ink-2">{thread.body}</p>
+          <div className="flex flex-wrap items-center gap-2 text-[12px]">
             {thread.tags.map((t) => (
-              <span key={t} className="rounded bg-white/5 px-1.5 py-0.5 text-zinc-400">
+              <span key={t} className="rounded-md bg-surface-muted px-1.5 py-0.5 text-ink-2">
                 {t}
               </span>
             ))}
-          </span>
+          </div>
         </div>
       </header>
 
-      {/* AI answers first */}
-      {thread.aiAnswer && <AiAnswer answer={thread.aiAnswer} />}
+      {/* AI answers first — TIGHT 12px gap, reads as an immediate response */}
+      {thread.aiAnswer && (
+        <div className="mt-3">
+          <AiAnswer answer={thread.aiAnswer} />
+        </div>
+      )}
 
-      {/* Replies */}
-      <section className="space-y-4">
-        <h2 className="text-sm font-medium text-zinc-400">
+      {/* LARGE gap + labeled divider — humans refine */}
+      <div className="mt-9 mb-4 flex items-center gap-3">
+        <h2 className="text-sm font-medium text-ink-2">
           {replies.length} {replies.length === 1 ? "reply" : "replies"} from the swarm
         </h2>
-        {replies.map((r) => (
-          <div
-            key={r.id}
-            className={`rounded-xl border p-4 ${
-              r.isAccepted ? "border-emerald-500/30 bg-emerald-500/[0.04]" : "border-white/10 bg-white/[0.02]"
-            }`}
-          >
-            <div className="mb-2 flex items-center gap-2 text-xs text-zinc-500">
-              <Avatar name={r.author} hue={r.avatarHue} size={20} image={r.image} />
-              <span className="text-zinc-300">{r.author}</span>
-              <span>· {r.createdAt}</span>
-              {r.isAccepted && (
-                <span className="ml-auto rounded-full bg-emerald-500/15 px-2 py-0.5 font-medium text-emerald-300">
-                  ✓ Accepted
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <section className="space-y-3">
+        {replies.map((r) =>
+          r.isAccepted ? (
+            <div
+              key={r.id}
+              className="rounded-r-xl border border-[#bfe3c9] border-l-[3px] border-l-success bg-success-bg p-4"
+            >
+              <div className="mb-2 flex items-center gap-2 text-[12px] text-ink-3">
+                <Avatar name={r.author} hue={r.avatarHue} size={20} image={r.image} />
+                <span className="font-medium text-ink">{r.author}</span>
+                <span>· {r.createdAt}</span>
+                <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#d6f0df] px-2 py-0.5 font-medium text-success">
+                  <Icon name="check" size={13} /> Accepted answer
                 </span>
-              )}
+              </div>
+              <Markish text={r.body} className="text-[15px] leading-relaxed text-[#0b3d2e]" />
             </div>
-            <Markish text={r.body} className="text-[15px] leading-relaxed text-zinc-200" />
-          </div>
-        ))}
+          ) : (
+            <div key={r.id} className="rounded-xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)]">
+              <div className="mb-2 flex items-center gap-2 text-[12px] text-ink-3">
+                <Avatar name={r.author} hue={r.avatarHue} size={20} image={r.image} />
+                <span className="font-medium text-ink">{r.author}</span>
+                <span>· {r.createdAt}</span>
+              </div>
+              <Markish text={r.body} className="text-[15px] leading-relaxed text-ink-2" />
+            </div>
+          ),
+        )}
       </section>
 
       {/* Reply composer — auth-gated */}
-      {session?.user ? (
-        <Composer threadId={id} />
-      ) : (
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-center">
-          <p className="mb-3 text-sm text-zinc-400">Sign in to add your answer to the swarm.</p>
-          <form action={signInWithGoogle} className="flex justify-center">
-            <button
-              type="submit"
-              className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-zinc-100 transition hover:border-white/30"
-            >
-              <GoogleGlyph /> Continue with Google
-            </button>
-          </form>
-        </div>
-      )}
+      <div className="mt-6">
+        {session?.user ? (
+          <Composer threadId={id} />
+        ) : (
+          <div className="rounded-xl border border-border bg-surface p-5 text-center shadow-[var(--shadow-xs)]">
+            <p className="mb-3 text-sm text-ink-2">Sign in to add your answer to the swarm.</p>
+            <form action={signInWithGoogle} className="flex justify-center">
+              <button
+                type="submit"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-border bg-surface px-4 text-sm font-medium text-ink transition-colors hover:bg-surface-muted"
+              >
+                <GoogleGlyph /> Continue with Google
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
     </article>
   );
 }
@@ -115,19 +137,10 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
 function GoogleGlyph() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
-      <path
-        fill="#4285F4"
-        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.23 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"
-      />
+      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09z" />
+      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.23 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z" />
       <path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z" />
-      <path
-        fill="#EA4335"
-        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"
-      />
+      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z" />
     </svg>
   );
 }

@@ -1,53 +1,33 @@
 import Link from "next/link";
+import Icon from "@/components/Icon";
 
 const ROOMS = [
-  {
-    title: "Live debugging: MCP servers",
-    host: "rohit",
-    when: "Today · 8:00 PM IST",
-    status: "live" as const,
-    here: 12,
-    tags: ["mcp", "claude-code"],
-  },
-  {
-    title: "Office hours: shipping your first eval gate",
-    host: "kevin_w",
-    when: "Tomorrow · 6:30 PM IST",
-    status: "soon" as const,
-    here: 0,
-    tags: ["evals", "agents"],
-  },
-  {
-    title: "Pair-build: a local agent on Ollama",
-    host: "sana",
-    when: "Sat · 11:00 AM IST",
-    status: "scheduled" as const,
-    here: 0,
-    tags: ["ollama", "local-llm"],
-  },
+  { title: "Live debugging: MCP servers", host: "rohit", when: "Today · 8:00 PM IST", status: "live" as const, here: 12, tags: ["mcp", "claude-code"] },
+  { title: "Office hours: shipping your first eval gate", host: "kevin_w", when: "Tomorrow · 6:30 PM IST", status: "soon" as const, here: 0, tags: ["evals", "agents"] },
+  { title: "Pair-build: a local agent on Ollama", host: "sana", when: "Sat · 11:00 AM IST", status: "scheduled" as const, here: 0, tags: ["ollama", "local-llm"] },
 ];
 
 const STATUS = {
-  live: { label: "● LIVE", cls: "text-red-400 bg-red-500/10 border-red-500/30" },
-  soon: { label: "Starting soon", cls: "text-amber-300 bg-amber-500/10 border-amber-500/25" },
-  scheduled: { label: "Scheduled", cls: "text-zinc-300 bg-white/5 border-white/15" },
+  live: { label: "LIVE", cls: "bg-danger-bg text-danger", dot: "bg-danger" },
+  soon: { label: "Starting soon", cls: "bg-accent-subtle text-accent-ink", dot: "bg-accent" },
+  scheduled: { label: "Scheduled", cls: "bg-surface-muted text-ink-2", dot: "bg-ink-3" },
 };
 
 export default function LivePage() {
   return (
     <div className="space-y-6">
-      <Link href="/" className="text-sm text-zinc-500 hover:text-amber-400">
+      <Link href="/" className="text-sm text-ink-3 transition-colors hover:text-accent-ink">
         ← Back to the swarm
       </Link>
 
       <div className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-white">Live rooms</h1>
-        <p className="max-w-xl text-[15px] text-zinc-400">
-          Go live with a problem — screen-share a bug, run weekly office hours, or pair-build an
-          agent in real time. Scheduled rooms keep the swarm meeting even before it&apos;s a crowd.
+        <h1 className="text-[24px] font-semibold tracking-[-0.01em] text-ink">Live rooms</h1>
+        <p className="max-w-xl text-[15px] text-ink-2">
+          Go live with a problem — screen-share a bug, run weekly office hours, or pair-build an agent
+          in real time. Scheduled rooms keep the swarm meeting even before it&apos;s a crowd.
         </p>
-        <button className="mt-1 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-amber-400">
-          + Go live with a problem
+        <button className="mt-1 inline-flex h-11 items-center gap-1.5 rounded-lg bg-accent px-4 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover">
+          <Icon name="dot" size={14} /> Go live with a problem
         </button>
       </div>
 
@@ -57,20 +37,23 @@ export default function LivePage() {
           return (
             <div
               key={r.title}
-              className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-4"
+              className="flex flex-col items-start gap-3 rounded-xl border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:flex-row sm:items-center"
             >
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 text-xs">
-                  <span className={`rounded-full border px-2 py-0.5 font-medium ${s.cls}`}>{s.label}</span>
-                  <span className="text-zinc-500">{r.when}</span>
+                <div className="flex items-center gap-2 text-[12px]">
+                  <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-medium ${s.cls}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
+                    {s.label}
+                  </span>
+                  <span className="text-ink-3">{r.when}</span>
                 </div>
-                <h3 className="mt-1.5 truncate text-[15px] font-semibold text-zinc-100">{r.title}</h3>
-                <div className="mt-1 flex items-center gap-2 text-xs text-zinc-500">
+                <h3 className="mt-1.5 truncate text-[15px] font-medium text-ink">{r.title}</h3>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-ink-3">
                   <span>hosted by {r.host}</span>
-                  {r.status === "live" && <span className="text-zinc-400">· {r.here} here now</span>}
+                  {r.status === "live" && <span className="text-ink-2">· {r.here} here now</span>}
                   <span className="flex gap-1.5">
                     {r.tags.map((t) => (
-                      <span key={t} className="rounded bg-white/5 px-1.5 py-0.5 text-zinc-400">
+                      <span key={t} className="rounded-md bg-surface-muted px-1.5 py-0.5 text-ink-2">
                         {t}
                       </span>
                     ))}
@@ -78,10 +61,10 @@ export default function LivePage() {
                 </div>
               </div>
               <button
-                className={`shrink-0 rounded-lg px-3.5 py-1.5 text-sm font-medium transition ${
+                className={`h-11 w-full shrink-0 rounded-lg px-4 text-sm font-semibold transition-colors sm:w-auto ${
                   r.status === "live"
-                    ? "bg-amber-500 text-black hover:bg-amber-400"
-                    : "border border-white/15 text-zinc-200 hover:border-white/30"
+                    ? "bg-accent text-ink hover:bg-accent-hover"
+                    : "border border-border text-ink hover:bg-surface-muted"
                 }`}
               >
                 {r.status === "live" ? "Join" : "Remind me"}

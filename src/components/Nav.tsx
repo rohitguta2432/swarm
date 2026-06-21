@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import Avatar from "./Avatar";
+import NavLinks from "./NavLinks";
+import MobileMenu from "./MobileMenu";
 import { auth } from "@/auth";
 import { signInWithGoogle, signOutAction } from "@/app/auth-actions";
 
@@ -9,48 +11,44 @@ export default async function Nav() {
   const user = session?.user;
 
   return (
-    <header className="sticky top-0 z-20 border-b border-white/10 bg-[#0a0a0b]/80 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-3xl items-center gap-4 px-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
+    <header className="sticky top-0 z-20 border-b border-border bg-surface/85 backdrop-blur">
+      <div className="mx-auto flex h-14 max-w-3xl items-center gap-2 px-4 sm:gap-3 sm:px-6">
+        <MobileMenu user={user ? { name: user.name, image: user.image } : null} />
+
+        <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight text-ink">
           <Logo />
           <span className="text-[15px]">
-            Swarm<span className="text-amber-500">.</span>
+            Swarm<span className="text-accent">.</span>
           </span>
         </Link>
-        <nav className="ml-2 hidden items-center gap-1 text-sm text-zinc-400 sm:flex">
-          <Link href="/" className="rounded-md px-2.5 py-1.5 hover:bg-white/5 hover:text-zinc-100">
-            Feed
-          </Link>
-          <Link href="/live" className="rounded-md px-2.5 py-1.5 hover:bg-white/5 hover:text-zinc-100">
-            Live
-          </Link>
-        </nav>
+
+        <NavLinks />
 
         <div className="ml-auto flex items-center gap-2">
           <Link
             href="/ask"
-            className="rounded-lg bg-amber-500 px-3.5 py-1.5 text-sm font-medium text-black transition hover:bg-amber-400"
+            className="hidden rounded-lg bg-accent px-3.5 py-1.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover sm:inline-flex"
           >
             Ask the swarm
           </Link>
 
           {user ? (
-            <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-2 sm:flex">
               <Avatar name={user.name ?? "you"} hue={40} size={28} image={user.image} />
               <form action={signOutAction}>
                 <button
                   type="submit"
-                  className="rounded-lg border border-white/15 px-3 py-1.5 text-sm text-zinc-300 transition hover:border-white/30 hover:text-zinc-100"
+                  className="rounded-lg px-3 py-1.5 text-sm text-ink-2 transition-colors hover:bg-surface-muted"
                 >
                   Sign out
                 </button>
               </form>
             </div>
           ) : (
-            <form action={signInWithGoogle}>
+            <form action={signInWithGoogle} className="hidden sm:block">
               <button
                 type="submit"
-                className="rounded-lg border border-white/15 px-3 py-1.5 text-sm text-zinc-200 transition hover:border-white/30"
+                className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-ink-2 transition-colors hover:bg-surface-muted hover:text-ink"
               >
                 Sign in
               </button>

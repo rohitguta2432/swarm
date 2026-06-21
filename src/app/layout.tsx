@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import MobileAskBar from "@/components/MobileAskBar";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -24,15 +25,19 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full">
         <Nav />
-        <main className="mx-auto max-w-3xl px-4 py-8">{children}</main>
-        <footer className="mx-auto max-w-3xl px-4 py-10 text-xs text-zinc-600">
-          <div className="border-t border-white/10 pt-6">
+        <main className="mx-auto max-w-3xl px-4 pb-24 pt-7 sm:px-6 sm:pb-12 sm:pt-9">{children}</main>
+        <footer className="mx-auto max-w-3xl px-4 pb-24 sm:px-6 sm:pb-10">
+          <div className="border-t border-border pt-6 text-[13px] text-ink-3">
             Swarm · a home for agent builders · built by{" "}
-            <a href="https://rohitraj.tech" className="text-zinc-400 hover:text-amber-400">
+            <a
+              href="https://rohitraj.tech"
+              className="inline-flex min-h-[44px] items-center text-ink-2 hover:text-accent-ink"
+            >
               rohitraj.tech
             </a>
           </div>
         </footer>
+        <MobileAskBar />
       </body>
     </html>
   );
