@@ -7,6 +7,7 @@ const LINKS = [
   { href: "/", label: "Feed" },
   { href: "/live", label: "Live" },
   { href: "/learn", label: "Learn" },
+  { href: "/news", label: "News" },
 ];
 
 // Desktop inline links. Active state uses weight + an amber-INK underline

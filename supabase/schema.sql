@@ -48,3 +48,31 @@ create index if not exists swarm_threads_created_idx
 
 -- Lock it down: enable RLS, add no policies → public/anon key has zero access.
 alter table swarm_threads enable row level security;
+
+
+-- Swarm — durable news links table.
+-- Same service-role-only contract as swarm_threads: the app writes via the
+-- server-only service-role client (src/lib/news.ts), so RLS stays ON with NO
+-- public policies — the anon/public key can't read or write, and only the server
+-- (service role, which bypasses RLS) can insert/select. Writes are additionally
+-- gated on a valid Google session in the submitLink server action.
+
+create table if not exists swarm_links (
+  id            text primary key,
+  url           text not null,
+  title         text not null,
+  summary       text not null default '',
+  source_domain text not null default '',
+  author        text not null,
+  author_image  text,
+  avatar_hue    int  not null default 40,
+  tags          text[] not null default '{}',
+  upvotes       int  not null default 0,
+  created_at    timestamptz not null default now()
+);
+
+create index if not exists swarm_links_created_idx
+  on swarm_links (created_at desc);
+
+-- Lock it down: enable RLS, add no policies → public/anon key has zero access.
+alter table swarm_links enable row level security;

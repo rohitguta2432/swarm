@@ -112,6 +112,64 @@ function offlineAnswer(title: string, body: string): string {
   ].join("\n");
 }
 
+// ── Article summaries for /news ────────────────────────────────────────────
+// Reuses the SAME tiered backend (tryOllama → tryOpenAI → tryAnthropic) as
+// generateAnswer, with a deterministic offline fallback so a submitted link
+// always gets a non-empty summary even with zero secrets configured.
+
+function domainOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "the web";
+  }
+}
+
+function buildSummaryPrompt(title: string, url: string, excerpt?: string): string {
+  return `You are Swarm's news summarizer for developers building AI agents.
+Write a concise, neutral 2–3 sentence summary of the linked article for an
+agent-builder audience. Plain text only — no preamble, no markdown headers, no
+"this article" filler. Just the summary.
+
+---
+TITLE: ${title}
+URL: ${url}
+SOURCE: ${domainOf(url)}
+${excerpt ? `EXCERPT:\n${excerpt}` : "(no excerpt available)"}
+---
+
+Summary:`;
+}
+
+// Deterministic, key-less fallback: a short blurb from title + domain (+ excerpt
+// if one was fetched). Keeps summaries non-empty with zero providers/network.
+function offlineSummary(title: string, url: string, excerpt?: string): string {
+  const domain = domainOf(url);
+  const trimmed = excerpt?.replace(/\s+/g, " ").trim().slice(0, 240);
+  const base = `Shared from ${domain}. ${title.trim()}.`;
+  return trimmed ? `${base} ${trimmed}${trimmed.length >= 240 ? "…" : ""}` : base;
+}
+
+export async function summarizeArticle(
+  title: string,
+  url: string,
+  excerpt?: string,
+): Promise<AiAnswer> {
+  const start = Date.now();
+  const prompt = buildSummaryPrompt(title, url, excerpt);
+
+  const ollama = await tryOllama(prompt);
+  if (ollama) return { text: ollama, model: process.env.OLLAMA_MODEL ?? "ollama", tookMs: Date.now() - start };
+
+  const openai = await tryOpenAI(prompt);
+  if (openai) return { text: openai, model: process.env.OPENAI_MODEL ?? "gpt-4o-mini", tookMs: Date.now() - start };
+
+  const anthropic = await tryAnthropic(prompt);
+  if (anthropic) return { text: anthropic, model: process.env.ANTHROPIC_MODEL ?? "claude", tookMs: Date.now() - start };
+
+  return { text: offlineSummary(title, url, excerpt), model: "swarm-summary (offline)", tookMs: Date.now() - start };
+}
+
 export async function generateAnswer(title: string, body: string): Promise<AiAnswer> {
   const start = Date.now();
   const prompt = buildPrompt(title, body);
