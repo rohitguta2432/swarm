@@ -12,6 +12,7 @@ import Markish from "@/components/Markish";
 import Icon from "@/components/Icon";
 import { jsonLd, threadLd, breadcrumbLd } from "@/lib/jsonld";
 import Composer from "./Composer";
+import TagLink from "@/components/TagLink";
 
 export async function generateMetadata({
   params,
@@ -107,13 +108,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
           <p className="whitespace-pre-wrap text-[16px] leading-relaxed text-ink-2">{thread.body}</p>
           <div className="flex flex-wrap items-center gap-2 text-[12px]">
             {thread.tags.map((t) => (
-              <Link
-                key={t}
-                href={`/tag/${t}`}
-                className="font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
-              >
-                {t}
-              </Link>
+              <TagLink key={t} tag={t} />
             ))}
           </div>
         </div>

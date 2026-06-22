@@ -13,7 +13,7 @@
 
   --color-ink: #111111;   /* primary text + hard borders */
   --color-ink-2: #555555; /* secondary  ~7:1 */
-  --color-ink-3: #7a7a72; /* muted/meta */
+  --color-ink-3: #6b6b64; /* muted/meta — darkened to clear WCAG AA 4.5:1 on canvas */
 
   --color-accent: #f59e0b;        /* fills / CTA / highlight blocks / logo */
   --color-accent-hover: #d97706;  /* fills only */

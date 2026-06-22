@@ -85,6 +85,7 @@ export default async function Home({
       </div>
 
       {/* Feed */}
+      <h2 className="sr-only">Threads</h2>
       <div className="space-y-3.5">
         {threads.map((thread) => (
           <ThreadCard key={thread.id} thread={thread} />

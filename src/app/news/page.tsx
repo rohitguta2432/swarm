@@ -7,6 +7,7 @@ import Markish from "@/components/Markish";
 import Icon from "@/components/Icon";
 import { jsonLd, newsItemListLd } from "@/lib/jsonld";
 import NewsSubmit from "./NewsSubmit";
+import TagLink from "@/components/TagLink";
 
 export const metadata: Metadata = {
   // Bare phrase — root title.template appends " · Swarm".
@@ -90,13 +91,7 @@ export default async function NewsPage() {
               {link.tags.length > 0 && (
                 <span className="flex flex-wrap items-center gap-2">
                   {link.tags.map((tag) => (
-                    <Link
-                      key={tag}
-                      href={`/tag/${tag}`}
-                      className="font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
-                    >
-                      {tag}
-                    </Link>
+                    <TagLink key={tag} tag={tag} />
                   ))}
                 </span>
               )}

@@ -5,6 +5,7 @@ import { getTopic } from "@/lib/knowledge";
 import { getThread } from "@/lib/data";
 import Markish from "@/components/Markish";
 import { jsonLd, learnArticleLd, breadcrumbLd } from "@/lib/jsonld";
+import TagLink from "@/components/TagLink";
 
 // Dynamic detail page for a knowledge topic. Mirrors src/app/t/[id]/page.tsx for
 // Next 16: params is a Promise and MUST be awaited in both generateMetadata and
@@ -83,13 +84,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
         <p className="mt-2 text-[16px] leading-relaxed text-ink-2">{topic.summary}</p>
         <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px]">
           {topic.tags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/tag/${tag}`}
-              className="font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
-            >
-              {tag}
-            </Link>
+            <TagLink key={tag} tag={tag} />
           ))}
         </div>
       </header>

@@ -3,6 +3,7 @@ import type { Thread } from "@/lib/types";
 import { KIND_LABEL } from "@/lib/types";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
+import TagLink from "./TagLink";
 
 const KIND_STYLE: Record<Thread["kind"], string> = {
   question: "bg-info-bg text-info",
@@ -60,13 +61,7 @@ export default function ThreadCard({ thread }: { thread: Thread }) {
           </span>
           <span className="flex flex-wrap gap-2">
             {thread.tags.slice(0, 3).map((t) => (
-              <Link
-                key={t}
-                href={`/tag/${t}`}
-                className="relative z-10 font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
-              >
-                {t}
-              </Link>
+              <TagLink key={t} tag={t} />
             ))}
           </span>
         </div>
