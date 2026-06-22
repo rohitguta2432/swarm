@@ -10,6 +10,7 @@ import Avatar from "@/components/Avatar";
 import AiAnswer from "@/components/AiAnswer";
 import Markish from "@/components/Markish";
 import Icon from "@/components/Icon";
+import { jsonLd, threadLd, breadcrumbLd } from "@/lib/jsonld";
 import Composer from "./Composer";
 
 export async function generateMetadata({
@@ -19,8 +20,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const thread = await getThreadById(id);
-  if (!thread) return { title: "Not found · Swarm" };
-  return { title: `${thread.title} · Swarm` };
+  // absolute title bypasses the root template so it stays "Not found · Swarm" (no doubling).
+  if (!thread) return { title: { absolute: "Not found · Swarm" } };
+  // Bare title — the root title.template appends " · Swarm". Canonical + per-thread OG.
+  return {
+    title: thread.title,
+    description: thread.body.slice(0, 200),
+    alternates: { canonical: `/t/${id}` },
+    openGraph: {
+      type: "article",
+      title: thread.title,
+      description: thread.body.slice(0, 200),
+      url: `/t/${id}`,
+    },
+  };
 }
 
 export default async function ThreadPage({ params }: { params: Promise<{ id: string }> }) {
@@ -35,6 +48,41 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
 
   return (
     <article>
+      {/* Structured data — the thread as a QAPage (questions) or DiscussionForumPosting, + breadcrumb. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            threadLd({
+              id: thread.id,
+              kind: thread.kind,
+              title: thread.title,
+              body: thread.body,
+              author: thread.author,
+              upvotes: thread.upvotes,
+              aiAnswer: thread.aiAnswer
+                ? { text: thread.aiAnswer.text, model: thread.aiAnswer.model }
+                : null,
+              replies: replies.map((r) => ({
+                author: r.author,
+                body: r.body,
+                isAccepted: r.isAccepted,
+              })),
+            }),
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            breadcrumbLd([
+              { name: "Swarm", path: "/" },
+              { name: thread.title, path: `/t/${thread.id}` },
+            ]),
+          ),
+        }}
+      />
       <Link href="/" className="text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink">
         ← Back to the swarm
       </Link>

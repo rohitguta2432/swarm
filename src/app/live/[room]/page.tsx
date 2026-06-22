@@ -10,7 +10,8 @@ export async function generateMetadata({
   params: Promise<{ room: string }>;
 }): Promise<Metadata> {
   const { room } = await params;
-  return { title: `#${room} · Live · Swarm` };
+  // Bare phrase — the root layout's title.template ("%s · Swarm") appends the suffix once.
+  return { title: `#${room} · Live` };
 }
 
 export default async function LiveRoomPage({ params }: { params: Promise<{ room: string }> }) {

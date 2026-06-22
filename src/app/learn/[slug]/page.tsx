@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getTopic } from "@/lib/knowledge";
 import { getThread } from "@/lib/data";
 import Markish from "@/components/Markish";
+import { jsonLd, learnArticleLd, breadcrumbLd } from "@/lib/jsonld";
 
 // Dynamic detail page for a knowledge topic. Mirrors src/app/t/[id]/page.tsx for
 // Next 16: params is a Promise and MUST be awaited in both generateMetadata and
@@ -15,8 +16,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const topic = getTopic(slug);
-  if (!topic) return { title: "Not found · Swarm" };
-  return { title: `${topic.title} · Swarm`, description: topic.summary };
+  // absolute bypasses the root template so it stays "Not found · Swarm" (no doubling).
+  if (!topic) return { title: { absolute: "Not found · Swarm" } };
+  // Bare title — root title.template appends " · Swarm". Canonical + per-topic OG.
+  return {
+    title: topic.title,
+    description: topic.summary,
+    alternates: { canonical: `/learn/${slug}` },
+    openGraph: {
+      type: "article",
+      title: topic.title,
+      description: topic.summary,
+      url: `/learn/${slug}`,
+    },
+  };
 }
 
 export default async function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -31,6 +44,25 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
 
   return (
     <article className="space-y-6">
+      {/* Structured data — the topic as a TechArticle, plus a breadcrumb trail. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(learnArticleLd({ id: topic.id, title: topic.title, summary: topic.summary })),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            breadcrumbLd([
+              { name: "Swarm", path: "/" },
+              { name: "Learn", path: "/learn" },
+              { name: topic.title, path: `/learn/${topic.id}` },
+            ]),
+          ),
+        }}
+      />
       <Link
         href="/learn"
         className="text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink"

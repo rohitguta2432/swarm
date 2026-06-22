@@ -5,12 +5,15 @@ import { getAllLinks } from "@/lib/news";
 import Avatar from "@/components/Avatar";
 import Markish from "@/components/Markish";
 import Icon from "@/components/Icon";
+import { jsonLd, newsItemListLd } from "@/lib/jsonld";
 import NewsSubmit from "./NewsSubmit";
 
 export const metadata: Metadata = {
-  title: "News: agent-building reads · Swarm",
+  // Bare phrase — root title.template appends " · Swarm".
+  title: "News: agent-building reads",
   description:
     "A community-curated feed of the best tech/AI articles for agent builders — every link auto-summarized by Swarm's AI so the feed stays scannable.",
+  alternates: { canonical: "/news" },
 };
 
 // /news — a Server Component (modeled on src/app/learn/page.tsx + ask/page.tsx).
@@ -23,6 +26,13 @@ export default async function NewsPage() {
 
   return (
     <div className="space-y-6">
+      {/* Structured data — the curated link feed as an ItemList. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(newsItemListLd(links.map((l) => ({ url: l.url, title: l.title })))),
+        }}
+      />
       <Link href="/" className="text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink">
         ← Back to the swarm
       </Link>

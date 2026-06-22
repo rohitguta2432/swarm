@@ -4,9 +4,11 @@ import { getKnowledge } from "@/lib/knowledge";
 import KnowledgeAsk from "@/components/KnowledgeAsk";
 
 export const metadata: Metadata = {
-  title: "Learn: building AI agents · Swarm",
+  // Bare phrase — the root title.template appends " · Swarm" (avoids " · Swarm · Swarm").
+  title: "Learn: building AI agents",
   description:
     "The applied how-to of building AI agents — evals, guardrails, tool design, reliability, observability, and cost control.",
+  alternates: { canonical: "/learn" },
 };
 
 // /learn index — a Server Component (no params, no async data) modeled on

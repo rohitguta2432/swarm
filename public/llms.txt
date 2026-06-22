@@ -1,0 +1,39 @@
+# Swarm
+
+> The community for developers building AI agents. Post a problem and an AI
+> answers in seconds; the swarm of builders then refines it. Discuss, go live,
+> and share what you ship. Niche to people building Claude Code skills, MCP
+> servers, multi-agent systems, and local-LLM stacks.
+
+Swarm's wedge is "AI answers first": every question gets an immediate AI triage
+answer, and human builders refine or accept it. Site: https://swarm.rohitraj.tech
+
+## Sections
+
+- [Feed](https://swarm.rohitraj.tech/): the live stream of questions, discussions, and show-and-tell threads.
+- [Ask](https://swarm.rohitraj.tech/ask): post an agent-building problem and get an AI answer in seconds.
+- [Live](https://swarm.rohitraj.tech/live): go live — screen-share a bug, run office hours, or pair-build an agent.
+- [Learn](https://swarm.rohitraj.tech/learn): the applied how-to of building AI agents.
+- [News](https://swarm.rohitraj.tech/news): a community-curated feed of the best agent-building reads, each auto-summarized.
+
+## Learn topics
+
+- [Evals: gate on recall, not vibes](https://swarm.rohitraj.tech/learn/evals)
+- [Guardrails: hard gates vs soft dials](https://swarm.rohitraj.tech/learn/guardrails)
+- [Tool design: narrow, described, idempotent](https://swarm.rohitraj.tech/learn/tool-design)
+- [Reliability: centralize backoff, don't retry per call](https://swarm.rohitraj.tech/learn/reliability)
+- [Observability: log selection vs logic](https://swarm.rohitraj.tech/learn/observability)
+- [Cost control: tier, cache, and cap fan-out](https://swarm.rohitraj.tech/learn/cost-control)
+
+## Featured threads
+
+- [MCP server starts but the tool never lists in the client](https://swarm.rohitraj.tech/t/mcp-tool-not-showing) — the fix is almost always stdout pollution: move all logging to stderr on stdio transport.
+- [How to eval a judgment-heavy agent without it being pure vibes](https://swarm.rohitraj.tech/t/evals-vs-vibes) — gate releases on recall over a labeled must-handle set; keep the LLM judge off the gate.
+- [A fully-local agent stack on Ollama with zero API cost](https://swarm.rohitraj.tech/t/show-local-agent-stack) — qwen3:14b + DuckDuckGo, runs offline on an M-series Mac.
+- [Claude Code subagent never gets selected](https://swarm.rohitraj.tech/t/subagent-not-triggering) — selection is driven by the agent description, not its name; lead with concrete trigger phrases.
+- [Handling provider rate limits in a multi-agent loop](https://swarm.rohitraj.tech/t/rate-limit-backoff) — don't retry per call; put one concurrency limiter in front of the pool and back the whole pool off on a 429.
+
+## About
+
+Swarm is built by rohitraj.tech as a home for agent builders. It runs with zero
+required secrets (an in-memory fallback backs the feed when no database is wired).

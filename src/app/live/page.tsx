@@ -1,8 +1,18 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import Icon from "@/components/Icon";
 import RoomPresenceCount from "./[room]/RoomPresenceCount";
 
-const ROOMS = [
+export const metadata: Metadata = {
+  title: "Live rooms",
+  description:
+    "Go live with a problem — screen-share a bug, run office hours, or pair-build an AI agent in real time with the Swarm community.",
+  alternates: { canonical: "/live" },
+};
+
+// Exported so src/app/sitemap.ts can enumerate the live-room slugs from one
+// source of truth (no hardcoded duplication of the slug strings).
+export const ROOMS = [
   { title: "Live debugging: MCP servers", slug: "mcp-debugging", host: "rohit", when: "Today · 8:00 PM IST", status: "live" as const, tags: ["mcp", "claude-code"] },
   { title: "Office hours: shipping your first eval gate", slug: "eval-gate-office-hours", host: "kevin_w", when: "Tomorrow · 6:30 PM IST", status: "soon" as const, tags: ["evals", "agents"] },
   { title: "Pair-build: a local agent on Ollama", slug: "ollama-pair-build", host: "sana", when: "Sat · 11:00 AM IST", status: "scheduled" as const, tags: ["ollama", "local-llm"] },
