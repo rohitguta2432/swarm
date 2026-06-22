@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { href: "/", label: "Feed" },
   { href: "/live", label: "Live" },
+  { href: "/learn", label: "Learn" },
 ];
 
 // Desktop inline links. Active state uses weight + an amber-INK underline

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Icon from "@/components/Icon";
+import RoomPresenceCount from "./[room]/RoomPresenceCount";
 
 const ROOMS = [
-  { title: "Live debugging: MCP servers", host: "rohit", when: "Today · 8:00 PM IST", status: "live" as const, here: 12, tags: ["mcp", "claude-code"] },
-  { title: "Office hours: shipping your first eval gate", host: "kevin_w", when: "Tomorrow · 6:30 PM IST", status: "soon" as const, here: 0, tags: ["evals", "agents"] },
-  { title: "Pair-build: a local agent on Ollama", host: "sana", when: "Sat · 11:00 AM IST", status: "scheduled" as const, here: 0, tags: ["ollama", "local-llm"] },
+  { title: "Live debugging: MCP servers", slug: "mcp-debugging", host: "rohit", when: "Today · 8:00 PM IST", status: "live" as const, tags: ["mcp", "claude-code"] },
+  { title: "Office hours: shipping your first eval gate", slug: "eval-gate-office-hours", host: "kevin_w", when: "Tomorrow · 6:30 PM IST", status: "soon" as const, tags: ["evals", "agents"] },
+  { title: "Pair-build: a local agent on Ollama", slug: "ollama-pair-build", host: "sana", when: "Sat · 11:00 AM IST", status: "scheduled" as const, tags: ["ollama", "local-llm"] },
 ];
 
 const STATUS = {
@@ -26,9 +27,12 @@ export default function LivePage() {
           Go live with a problem — screen-share a bug, run weekly office hours, or pair-build an agent
           in real time. Scheduled rooms keep the swarm meeting even before it&apos;s a crowd.
         </p>
-        <button className="mt-1 inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)]">
+        <Link
+          href={`/live/${ROOMS[0].slug}`}
+          className="mt-1 inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)]"
+        >
           <Icon name="dot" size={14} /> Go live with a problem
-        </button>
+        </Link>
       </div>
 
       <div className="space-y-3">
@@ -50,7 +54,7 @@ export default function LivePage() {
                 <h3 className="mt-1.5 truncate text-[15px] font-bold text-ink">{r.title}</h3>
                 <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-ink-3">
                   <span>hosted by {r.host}</span>
-                  {r.status === "live" && <span className="text-ink-2">· {r.here} here now</span>}
+                  <RoomPresenceCount slug={r.slug} />
                   <span className="flex gap-2">
                     {r.tags.map((t) => (
                       <span key={t} className="font-medium text-ink-2 before:text-ink-3 before:content-['#']">
@@ -60,15 +64,16 @@ export default function LivePage() {
                   </span>
                 </div>
               </div>
-              <button
-                className={`h-11 w-full shrink-0 border-2 border-ink px-4 text-sm font-bold transition-colors sm:w-auto ${
+              <Link
+                href={`/live/${r.slug}`}
+                className={`inline-flex h-11 w-full shrink-0 items-center justify-center border-2 border-ink px-4 text-sm font-bold transition-colors sm:w-auto ${
                   r.status === "live"
                     ? "bg-accent text-ink hover:bg-accent-hover"
                     : "bg-surface text-ink hover:bg-surface-muted"
                 }`}
               >
-                {r.status === "live" ? "Join" : "Remind me"}
-              </button>
+                {r.status === "live" ? "Join" : "Open room"}
+              </Link>
             </div>
           );
         })}

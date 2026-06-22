@@ -24,10 +24,11 @@ Then humans pile on top of the AI's first pass, and accepted answers mark a thre
 
 - **Feed** (`/`) — questions, discussions, and show-&-tell, filterable by tab. Seeded with
   real agent-builder threads so it launches non-empty.
-- **Ask** (`/ask`) — post a problem and get a live AI answer (`POST /api/ai-answer`).
+- **Ask** (`/ask`) — post a problem, get a live AI answer (`POST /api/ai-answer`), then post it as a durable thread to the feed.
 - **Thread** (`/t/[id]`) — AI answer first, then human replies, then a reply box.
-- **Live** (`/live`) — scheduled live rooms / office hours / pair-build sessions.
-- **Auth** — Google SSO via Auth.js v5 (JWT sessions). Signed-in users can post replies.
+- **Live** (`/live`) — real-time rooms (Supabase Realtime presence + broadcast) with a zero-secrets offline fallback.
+- **Learn** (`/learn`) — agent-building knowledge (evals, guardrails, reliability…) with an "ask the knowledge base" helper.
+- **Auth** — Google SSO via Auth.js v5 (JWT sessions). Signed-in users can post threads + replies.
 
 ## Sign-in (Google SSO) + durable replies
 
@@ -44,24 +45,16 @@ https://swarm.rohitraj.tech/api/auth/callback/google
 
 Then set `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, and `AUTH_SECRET` (`npx auth secret`).
 
-**2. Supabase** — create a project, then run this SQL and set `SUPABASE_URL` +
-`SUPABASE_SERVICE_ROLE_KEY` (server-only):
-
-```sql
-create table if not exists swarm_replies (
-  id           uuid primary key default gen_random_uuid(),
-  thread_id    text not null,
-  author       text not null,
-  author_image text,
-  avatar_hue   int  not null default 40,
-  body         text not null,
-  created_at   timestamptz not null default now()
-);
-create index if not exists swarm_replies_thread_idx on swarm_replies (thread_id, created_at);
-```
+**2. Supabase** — create a project, run the SQL in [`supabase/schema.sql`](supabase/schema.sql)
+(the source of truth — it defines **both** `swarm_replies` and `swarm_threads`, each with RLS
+on and no public policies), then set `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` (server-only).
 
 Writes go through a server-only service-role client and are gated on a valid Auth.js
-session, so the anon key is never exposed and only signed-in users can post.
+session, so the service-role key is never exposed and only signed-in users can post.
+
+**3. Live rooms (optional)** — to make `/live` real-time, also set the **public**
+`NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` (see `.env.example`). Without
+them, rooms still render and run in a local-only offline demo mode.
 
 ## The "AI answers first" engine
 
@@ -91,8 +84,10 @@ npm run build    # production build
 
 - [x] Google SSO (Auth.js v5).
 - [x] Durable **replies** (Supabase) with in-memory fallback.
-- [ ] Durable **threads** (move the seed feed into Postgres).
-- [ ] Posting a question persists it to the feed for human answers.
+- [x] Durable **threads** (Supabase `swarm_threads`) with in-memory fallback.
+- [x] Posting a question persists it to the feed for human answers.
+- [x] Live rooms — real-time presence + chat (Supabase Realtime, ephemeral) for `/live`.
+- [x] Knowledge layer (`/learn`) — evals / guardrails guides + an AI helper.
 - [ ] Accepted-answer + reputation mechanics (let the asker accept a reply).
-- [ ] WebRTC / live-room backend for `/live`.
+- [ ] Durable live-room history (persist messages) + send-side authz.
 - [ ] README badge / embed so threads spread.

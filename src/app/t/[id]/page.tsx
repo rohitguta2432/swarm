@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getThread } from "@/lib/data";
+import { getThreadById } from "@/lib/threads";
 import { getStoredReplies } from "@/lib/replies";
 import { KIND_LABEL } from "@/lib/types";
 import { auth } from "@/auth";
@@ -18,14 +18,14 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const thread = getThread(id);
+  const thread = await getThreadById(id);
   if (!thread) return { title: "Not found · Swarm" };
   return { title: `${thread.title} · Swarm` };
 }
 
 export default async function ThreadPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const thread = getThread(id);
+  const thread = await getThreadById(id);
   if (!thread) notFound();
 
   const [session, stored] = await Promise.all([auth(), getStoredReplies(id)]);

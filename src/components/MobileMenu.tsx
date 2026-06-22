@@ -80,6 +80,9 @@ export default function MobileMenu({ user }: { user: User }) {
             <Link href="/live" className={linkCls}>
               Live
             </Link>
+            <Link href="/learn" className={linkCls}>
+              Learn
+            </Link>
 
             <div className="my-2 border-t border-border" />
 

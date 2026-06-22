@@ -1,9 +1,10 @@
 // Seed content for the MVP. Swarm launches NON-empty: it's pre-filled with real
 // agent-builder threads so the very first visitor lands in an active room.
 //
-// MVP persistence note: this is an in-memory seed read on each request. New posts
-// from /ask are answered live but not persisted across serverless invocations —
-// wiring Supabase/Postgres for durable threads is the first post-MVP task.
+// Persistence note: these seed threads are always shown. Durable threads now exist
+// via src/lib/threads.ts, which merges persisted threads (Supabase, or an in-memory
+// fallback when no secrets are set) on top of this seed array. THREADS and getThread
+// are consumed by src/lib/threads.ts for that merge + seed-id fallback.
 
 import type { Thread } from "./types";
 

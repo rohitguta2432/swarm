@@ -39,3 +39,22 @@ export const KIND_LABEL: Record<ThreadKind, string> = {
   discussion: "Discussion",
   show: "Show & tell",
 };
+
+// Knowledge layer — the applied how-to of building AI agents. Authored as typed
+// data (src/lib/knowledge.ts) and rendered by /learn, mirroring the data-driven
+// style of Thread / src/lib/data.ts. Section bodies are Markish-formatted
+// (**bold**, `code`, "- " bullets only — anything else renders as plain text).
+export type KnowledgeSection = {
+  heading: string;
+  body: string; // Markish-formatted text
+};
+
+export type KnowledgeTopic = {
+  id: string; // lowercase-kebab slug used in the URL (/learn/<id>)
+  title: string;
+  summary: string;
+  icon?: string;
+  tags: string[];
+  relatedThreadIds: string[]; // must match real ids in src/lib/data.ts
+  sections: KnowledgeSection[];
+};

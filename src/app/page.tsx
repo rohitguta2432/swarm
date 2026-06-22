@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getThreads } from "@/lib/data";
+import { getAllThreads } from "@/lib/threads";
 import type { ThreadKind } from "@/lib/types";
 import ThreadCard from "@/components/ThreadCard";
 import Icon from "@/components/Icon";
@@ -18,7 +18,8 @@ export default async function Home({
 }) {
   const { tab } = await searchParams;
   const active = (TABS.find((t) => t.key === tab)?.key ?? "all") as "all" | ThreadKind;
-  const threads = getThreads().filter((t) => active === "all" || t.kind === active);
+  const all = await getAllThreads();
+  const threads = all.filter((t) => active === "all" || t.kind === active);
 
   return (
     <div className="space-y-7 sm:space-y-9">
