@@ -14,10 +14,10 @@ export default function ThreadCard({ thread }: { thread: Thread }) {
   const solved = thread.replies.some((r) => r.isAccepted);
 
   return (
-    <Link
-      href={`/t/${thread.id}`}
-      className="group relative flex gap-3 border-2 border-ink bg-surface p-3.5 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]"
-    >
+    <div className="group relative flex gap-3 border-2 border-ink bg-surface p-3.5 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]">
+      {/* Whole-card link as a stretched overlay so the tag links below can be real
+          siblings (nested <a> is invalid HTML). Tag links sit above it via z-10. */}
+      <Link href={`/t/${thread.id}`} className="absolute inset-0 z-0" aria-label={thread.title} />
       {/* vote gutter */}
       <div className="flex w-9 shrink-0 flex-col items-center pt-0.5 text-ink-3 sm:w-11">
         <Icon name="chevron-up" size={16} />
@@ -60,13 +60,17 @@ export default function ThreadCard({ thread }: { thread: Thread }) {
           </span>
           <span className="flex flex-wrap gap-2">
             {thread.tags.slice(0, 3).map((t) => (
-              <span key={t} className="font-medium text-ink-2 before:text-ink-3 before:content-['#']">
+              <Link
+                key={t}
+                href={`/tag/${t}`}
+                className="relative z-10 font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
+              >
                 {t}
-              </span>
+              </Link>
             ))}
           </span>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

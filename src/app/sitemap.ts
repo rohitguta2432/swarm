@@ -17,6 +17,7 @@ import type { MetadataRoute } from "next";
 import { getAllThreads } from "@/lib/threads";
 import { TOPICS } from "@/lib/knowledge";
 import { ROOMS } from "@/app/live/page";
+import { getAllTags } from "@/lib/tags";
 
 const BASE = "https://swarm.rohitraj.tech";
 
@@ -29,6 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/live`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     { url: `${BASE}/learn`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/news`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${BASE}/tags`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
   ];
 
   // Threads — seed set is guaranteed zero-env; persisted threads merge in when Supabase is wired.
@@ -54,5 +56,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticRoutes, ...threadRoutes, ...learnRoutes, ...liveRoutes];
+  // Programmatic tag landing pages — one /tag/<tag> per tag used across threads,
+  // news links, and learn topics. Slightly below core pages in priority.
+  const tags = await getAllTags();
+  const tagRoutes: MetadataRoute.Sitemap = tags.map(({ tag }) => ({
+    url: `${BASE}/tag/${encodeURIComponent(tag)}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.5,
+  }));
+
+  return [...staticRoutes, ...threadRoutes, ...learnRoutes, ...liveRoutes, ...tagRoutes];
 }

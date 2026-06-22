@@ -83,9 +83,13 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
         <p className="mt-2 text-[16px] leading-relaxed text-ink-2">{topic.summary}</p>
         <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px]">
           {topic.tags.map((tag) => (
-            <span key={tag} className="font-medium text-ink-2 before:text-ink-3 before:content-['#']">
+            <Link
+              key={tag}
+              href={`/tag/${tag}`}
+              className="font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
+            >
               {tag}
-            </span>
+            </Link>
           ))}
         </div>
       </header>

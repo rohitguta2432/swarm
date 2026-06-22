@@ -160,6 +160,27 @@ export function learnArticleLd(topic: {
   };
 }
 
+// A tag landing page → CollectionPage wrapping an ItemList of the matching items
+// (threads + reads). Each item links to its on-site page (/t/<id>) or external read URL.
+export function tagCollectionLd(tag: string, items: { url: string; name: string }[]): JsonLdNode {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `#${tag} — agent-builder threads & reads`,
+    url: `${SITE_URL}/tag/${tag}`,
+    description: `Threads and curated reads tagged #${tag} on ${SITE_NAME}.`,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: items.map((it, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: it.url,
+        name: it.name,
+      })),
+    },
+  };
+}
+
 // The /news feed → ItemList of the curated links.
 export function newsItemListLd(links: { url: string; title: string }[]): JsonLdNode {
   return {

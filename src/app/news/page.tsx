@@ -90,12 +90,13 @@ export default async function NewsPage() {
               {link.tags.length > 0 && (
                 <span className="flex flex-wrap items-center gap-2">
                   {link.tags.map((tag) => (
-                    <span
+                    <Link
                       key={tag}
-                      className="font-medium text-ink-2 before:text-ink-3 before:content-['#']"
+                      href={`/tag/${tag}`}
+                      className="font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
                     >
                       {tag}
-                    </span>
+                    </Link>
                   ))}
                 </span>
               )}

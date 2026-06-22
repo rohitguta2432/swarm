@@ -107,9 +107,13 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
           <p className="whitespace-pre-wrap text-[16px] leading-relaxed text-ink-2">{thread.body}</p>
           <div className="flex flex-wrap items-center gap-2 text-[12px]">
             {thread.tags.map((t) => (
-              <span key={t} className="font-medium text-ink-2 before:text-ink-3 before:content-['#']">
+              <Link
+                key={t}
+                href={`/tag/${t}`}
+                className="font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
+              >
                 {t}
-              </span>
+              </Link>
             ))}
           </div>
         </div>
