@@ -87,6 +87,30 @@ async function tryAnthropic(prompt: string): Promise<string | null> {
   }
 }
 
+// Generic OpenAI-compatible tier — the free production backend. Works with any
+// endpoint that implements POST /chat/completions (Gemini, Groq, OpenRouter, …),
+// chosen entirely by env (LLM_BASE_URL + LLM_API_KEY + LLM_MODEL) so swapping
+// providers never touches code. Server-only: the key is never NEXT_PUBLIC_.
+async function tryOpenAICompatible(prompt: string): Promise<string | null> {
+  const base = process.env.LLM_BASE_URL;
+  const key = process.env.LLM_API_KEY;
+  const model = process.env.LLM_MODEL;
+  if (!base || !key || !model) return null;
+  try {
+    const res = await fetch(`${base.replace(/\/$/, "")}/chat/completions`, {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
+      body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], max_tokens: 700 }),
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+    return data.choices?.[0]?.message?.content?.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
 // Deterministic, key-less fallback. Not a real LLM — a structured triage scaffold
 // so the room is never empty. Good enough to ship; replace by setting a provider.
 function offlineAnswer(title: string, body: string): string {
@@ -161,6 +185,9 @@ export async function summarizeArticle(
   const ollama = await tryOllama(prompt);
   if (ollama) return { text: ollama, model: process.env.OLLAMA_MODEL ?? "ollama", tookMs: Date.now() - start };
 
+  const llm = await tryOpenAICompatible(prompt);
+  if (llm) return { text: llm, model: process.env.LLM_MODEL ?? "llm", tookMs: Date.now() - start };
+
   const openai = await tryOpenAI(prompt);
   if (openai) return { text: openai, model: process.env.OPENAI_MODEL ?? "gpt-4o-mini", tookMs: Date.now() - start };
 
@@ -176,6 +203,9 @@ export async function generateAnswer(title: string, body: string): Promise<AiAns
 
   const ollama = await tryOllama(prompt);
   if (ollama) return { text: ollama, model: process.env.OLLAMA_MODEL ?? "ollama", tookMs: Date.now() - start };
+
+  const llm = await tryOpenAICompatible(prompt);
+  if (llm) return { text: llm, model: process.env.LLM_MODEL ?? "llm", tookMs: Date.now() - start };
 
   const openai = await tryOpenAI(prompt);
   if (openai) return { text: openai, model: process.env.OPENAI_MODEL ?? "gpt-4o-mini", tookMs: Date.now() - start };
