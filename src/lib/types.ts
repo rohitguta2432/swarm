@@ -49,12 +49,20 @@ export type KnowledgeSection = {
   body: string; // Markish-formatted text
 };
 
+// A topic belongs to one of two tracks on /learn:
+//  - "patterns": how you *build* an agent (the architectural design patterns)
+//  - "operational": how you *run* it in production (evals, guardrails, …)
+export type KnowledgeTrack = "patterns" | "operational";
+
 export type KnowledgeTopic = {
   id: string; // lowercase-kebab slug used in the URL (/learn/<id>)
   title: string;
   summary: string;
   icon?: string;
+  track?: KnowledgeTrack; // which /learn track; absent → treated as "operational"
+  group?: string; // optional book-section label (Core / Advanced / …); not rendered in v1
   tags: string[];
   relatedThreadIds: string[]; // must match real ids in src/lib/data.ts
+  relatedTopicIds?: string[]; // cross-links to other KnowledgeTopic ids (sibling patterns / operational counterpart)
   sections: KnowledgeSection[];
 };

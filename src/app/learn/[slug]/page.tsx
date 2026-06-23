@@ -43,6 +43,17 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
     .map((id) => getThread(id))
     .filter((t): t is NonNullable<typeof t> => Boolean(t));
 
+  // Resolve cross-linked sibling topics (a pattern ↔ its operational counterpart,
+  // or one pattern → another). Guards ids that don't resolve.
+  const relatedTopics = (topic.relatedTopicIds ?? [])
+    .map((id) => getTopic(id))
+    .filter((t): t is NonNullable<typeof t> => Boolean(t));
+
+  // Wikilink resolver for Markish: a [[slug]] points at a topic, else a thread,
+  // else it degrades to plain text.
+  const resolveLink = (slug: string): string | null =>
+    getTopic(slug) ? `/learn/${slug}` : getThread(slug) ? `/t/${slug}` : null;
+
   return (
     <article className="space-y-6">
       {/* Structured data — the topic as a TechArticle, plus a breadcrumb trail. */}
@@ -96,10 +107,36 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
             <h2 className="font-display text-[18px] font-bold leading-snug tracking-[-0.01em] text-ink">
               {s.heading}
             </h2>
-            <Markish text={s.body} className="mt-2 text-[15px] leading-relaxed text-ink-2" />
+            <Markish text={s.body} resolveLink={resolveLink} className="mt-2 text-[15px] leading-relaxed text-ink-2" />
           </div>
         ))}
       </section>
+
+      {/* Related patterns / topics — cross-track links between the two /learn tracks */}
+      {relatedTopics.length > 0 && (
+        <section>
+          <div className="mb-3 flex items-center gap-3">
+            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+              Related patterns
+            </h2>
+            <span className="h-0.5 flex-1 bg-ink" />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {relatedTopics.map((t) => (
+              <Link
+                key={t.id}
+                href={`/learn/${t.id}`}
+                className="group block border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]"
+              >
+                <h3 className="text-[15px] font-bold leading-snug text-ink group-hover:text-accent-ink">
+                  {t.title}
+                </h3>
+                <p className="mt-1 text-[13px] leading-relaxed text-ink-2">{t.summary}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Related threads from the feed */}
       {related.length > 0 && (
