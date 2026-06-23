@@ -16,7 +16,27 @@ answer, and human builders refine or accept it. Site: https://swarm.rohitraj.tec
 - [Learn](https://swarm.rohitraj.tech/learn): the applied how-to of building AI agents.
 - [News](https://swarm.rohitraj.tech/news): a community-curated feed of the best agent-building reads, each auto-summarized.
 
-## Learn topics
+## Learn — design patterns (how to build an agent)
+
+Adapted from Antonio Gullí's "Agentic Design Patterns".
+
+- [Prompt chaining: decompose, verify each step](https://swarm.rohitraj.tech/learn/prompt-chaining)
+- [Routing: send each input to the right handler](https://swarm.rohitraj.tech/learn/routing)
+- [Parallelization: fan out independent work](https://swarm.rohitraj.tech/learn/parallelization)
+- [Reflection: let the agent critique its own output](https://swarm.rohitraj.tech/learn/reflection)
+- [Planning: make a plan before acting](https://swarm.rohitraj.tech/learn/planning)
+- [Multi-agent: split roles, coordinate the work](https://swarm.rohitraj.tech/learn/multi-agent)
+- [Memory: what the agent keeps between turns](https://swarm.rohitraj.tech/learn/memory)
+- [Learning & adaptation: improve from feedback](https://swarm.rohitraj.tech/learn/learning-adaptation)
+- [MCP: a standard port for tools and context](https://swarm.rohitraj.tech/learn/mcp)
+- [Goal setting & monitoring: track progress to a target](https://swarm.rohitraj.tech/learn/goal-monitoring)
+- [RAG: ground answers in retrieved knowledge](https://swarm.rohitraj.tech/learn/rag)
+- [Inter-agent comms: how agents talk (A2A)](https://swarm.rohitraj.tech/learn/agent-comms)
+- [Reasoning techniques: think before you answer](https://swarm.rohitraj.tech/learn/reasoning)
+- [Prioritization: decide what to do next](https://swarm.rohitraj.tech/learn/prioritization)
+- [Exploration & discovery: search an open space](https://swarm.rohitraj.tech/learn/exploration)
+
+## Learn — operational practices (how to run an agent)
 
 - [Evals: gate on recall, not vibes](https://swarm.rohitraj.tech/learn/evals)
 - [Guardrails: hard gates vs soft dials](https://swarm.rohitraj.tech/learn/guardrails)
