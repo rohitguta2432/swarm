@@ -87,16 +87,15 @@ async function tryAnthropic(prompt: string): Promise<string | null> {
   }
 }
 
-// Generic OpenAI-compatible tier — the free production backend. Works with any
-// endpoint that implements POST /chat/completions (Gemini, Groq, OpenRouter, …),
-// chosen entirely by env (LLM_BASE_URL + LLM_API_KEY + LLM_MODEL) so swapping
-// providers never touches code. Server-only: the key is never NEXT_PUBLIC_.
-async function tryOpenAICompatible(prompt: string): Promise<string | null> {
-  const base = process.env.LLM_BASE_URL;
-  const key = process.env.LLM_API_KEY;
-  const model = process.env.LLM_MODEL;
-  if (!base || !key || !model) return null;
-
+// One OpenAI-compatible provider call, with retry on transient 429/503 overload.
+// Works with any endpoint that implements POST /chat/completions (Gemini, Groq,
+// OpenRouter, …). Non-retryable errors (e.g. 400/401) give up immediately.
+async function callOpenAICompatible(
+  prompt: string,
+  base: string,
+  key: string,
+  model: string,
+): Promise<string | null> {
   const url = `${base.replace(/\/$/, "")}/chat/completions`;
   const payload = JSON.stringify({
     model,
@@ -105,9 +104,7 @@ async function tryOpenAICompatible(prompt: string): Promise<string | null> {
   });
 
   // Free tiers (notably Gemini Flash) intermittently return 429/503 "high demand".
-  // Retry a couple of times with short backoff to ride through transient overload
-  // before falling through to the next tier. Non-retryable errors (e.g. 400/401)
-  // give up immediately.
+  // Retry a couple of times with short backoff to ride through transient overload.
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const res = await fetch(url, {
@@ -125,6 +122,29 @@ async function tryOpenAICompatible(prompt: string): Promise<string | null> {
       // network/timeout — treat as transient and retry
     }
     if (attempt < 2) await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
+  }
+  return null;
+}
+
+// Free hosted LLM tier — the production backend, all OpenAI-compatible and
+// chosen entirely by env so swapping/adding providers never touches code.
+// Tries each configured provider in order: primary LLM_*, then fallback LLM2_*
+// (e.g. Gemini → Groq). A provider whose env is unset is skipped. Returns the
+// first real answer plus the model that produced it. Server-only: keys are
+// never NEXT_PUBLIC_.
+const LLM_PROVIDERS = [
+  { base: "LLM_BASE_URL", key: "LLM_API_KEY", model: "LLM_MODEL" },
+  { base: "LLM2_BASE_URL", key: "LLM2_API_KEY", model: "LLM2_MODEL" },
+] as const;
+
+async function tryLLMs(prompt: string): Promise<{ text: string; model: string } | null> {
+  for (const p of LLM_PROVIDERS) {
+    const base = process.env[p.base];
+    const key = process.env[p.key];
+    const model = process.env[p.model];
+    if (!base || !key || !model) continue;
+    const text = await callOpenAICompatible(prompt, base, key, model);
+    if (text) return { text, model };
   }
   return null;
 }
@@ -203,8 +223,8 @@ export async function summarizeArticle(
   const ollama = await tryOllama(prompt);
   if (ollama) return { text: ollama, model: process.env.OLLAMA_MODEL ?? "ollama", tookMs: Date.now() - start };
 
-  const llm = await tryOpenAICompatible(prompt);
-  if (llm) return { text: llm, model: process.env.LLM_MODEL ?? "llm", tookMs: Date.now() - start };
+  const llm = await tryLLMs(prompt);
+  if (llm) return { text: llm.text, model: llm.model, tookMs: Date.now() - start };
 
   const openai = await tryOpenAI(prompt);
   if (openai) return { text: openai, model: process.env.OPENAI_MODEL ?? "gpt-4o-mini", tookMs: Date.now() - start };
@@ -222,8 +242,8 @@ export async function generateAnswer(title: string, body: string): Promise<AiAns
   const ollama = await tryOllama(prompt);
   if (ollama) return { text: ollama, model: process.env.OLLAMA_MODEL ?? "ollama", tookMs: Date.now() - start };
 
-  const llm = await tryOpenAICompatible(prompt);
-  if (llm) return { text: llm, model: process.env.LLM_MODEL ?? "llm", tookMs: Date.now() - start };
+  const llm = await tryLLMs(prompt);
+  if (llm) return { text: llm.text, model: llm.model, tookMs: Date.now() - start };
 
   const openai = await tryOpenAI(prompt);
   if (openai) return { text: openai, model: process.env.OPENAI_MODEL ?? "gpt-4o-mini", tookMs: Date.now() - start };
