@@ -96,19 +96,37 @@ async function tryOpenAICompatible(prompt: string): Promise<string | null> {
   const key = process.env.LLM_API_KEY;
   const model = process.env.LLM_MODEL;
   if (!base || !key || !model) return null;
-  try {
-    const res = await fetch(`${base.replace(/\/$/, "")}/chat/completions`, {
-      method: "POST",
-      headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
-      body: JSON.stringify({ model, messages: [{ role: "user", content: prompt }], max_tokens: 700 }),
-      signal: AbortSignal.timeout(20_000),
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
-    return data.choices?.[0]?.message?.content?.trim() || null;
-  } catch {
-    return null;
+
+  const url = `${base.replace(/\/$/, "")}/chat/completions`;
+  const payload = JSON.stringify({
+    model,
+    messages: [{ role: "user", content: prompt }],
+    max_tokens: 700,
+  });
+
+  // Free tiers (notably Gemini Flash) intermittently return 429/503 "high demand".
+  // Retry a couple of times with short backoff to ride through transient overload
+  // before falling through to the next tier. Non-retryable errors (e.g. 400/401)
+  // give up immediately.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
+        body: payload,
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+        return data.choices?.[0]?.message?.content?.trim() || null;
+      }
+      if (res.status !== 429 && res.status !== 503) return null; // not transient — stop
+    } catch {
+      // network/timeout — treat as transient and retry
+    }
+    if (attempt < 2) await new Promise((r) => setTimeout(r, 600 * (attempt + 1)));
   }
+  return null;
 }
 
 // Deterministic, key-less fallback. Not a real LLM — a structured triage scaffold
