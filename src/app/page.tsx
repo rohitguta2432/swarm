@@ -18,6 +18,7 @@ export default async function Home({
 }) {
   const { tab } = await searchParams;
   const active = (TABS.find((t) => t.key === tab)?.key ?? "all") as "all" | ThreadKind;
+  const activeLabel = TABS.find((t) => t.key === active)?.label ?? "threads";
   const all = await getAllThreads();
   const threads = all.filter((t) => active === "all" || t.kind === active);
 
@@ -25,15 +26,15 @@ export default async function Home({
     <div className="space-y-7 sm:space-y-9">
       {/* Hero — demonstrates the wedge, doesn't just describe it */}
       <section className="space-y-3">
-        <h1 className="font-display text-[34px] font-bold leading-[1.12] tracking-[-0.035em] text-ink sm:text-[52px] sm:leading-[1.05]">
+        <h1 className="font-display text-balance text-[34px] font-bold leading-[1.12] tracking-[-0.035em] text-ink sm:text-[52px] sm:leading-[1.05]">
           Where agent builders{" "}
           <span className="box-decoration-clone bg-accent px-1.5 text-ink">ask</span>,{" "}
           <span className="box-decoration-clone bg-accent px-1.5 text-ink">go&nbsp;live</span>, and{" "}
           <span className="box-decoration-clone bg-accent px-1.5 text-ink">ship</span>.
         </h1>
-        <p className="max-w-xl text-[15px] leading-relaxed text-ink-2">
+        <p className="max-w-xl text-pretty text-[15px] leading-relaxed text-ink-2">
           Post a problem and an AI answers in seconds — then the swarm of builders refines it.
-          Niche to people building Claude Code skills, MCP servers, multi-agent systems and
+          Built for people shipping Claude Code skills, MCP servers, multi-agent systems, and
           local-LLM stacks.
         </p>
         <div className="flex flex-wrap items-center gap-3 pt-1">
@@ -87,9 +88,31 @@ export default async function Home({
       {/* Feed */}
       <h2 className="sr-only">Threads</h2>
       <div className="space-y-3.5">
-        {threads.map((thread) => (
-          <ThreadCard key={thread.id} thread={thread} />
-        ))}
+        {threads.length === 0 ? (
+          <div className="border-2 border-ink bg-surface p-8 text-center shadow-[var(--shadow-hard)]">
+            <p className="font-display text-[18px] font-bold text-ink">
+              {active === "all" ? "No threads yet" : `No ${activeLabel.toLowerCase()} yet`}
+            </p>
+            <p className="mx-auto mt-1.5 max-w-sm text-[14px] leading-relaxed text-ink-2">
+              Be the first to post — ask the swarm and an AI answers in seconds, then builders refine it.
+            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/ask"
+                className="inline-flex items-center gap-1.5 border-2 border-ink bg-accent px-4 py-2.5 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)]"
+              >
+                Ask the swarm <Icon name="arrow-right" size={16} />
+              </Link>
+              {active !== "all" ? (
+                <Link href="/" className="text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink">
+                  View all threads
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        ) : (
+          threads.map((thread) => <ThreadCard key={thread.id} thread={thread} />)
+        )}
       </div>
     </div>
   );

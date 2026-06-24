@@ -23,13 +23,13 @@ export default function ThreadCard({ thread }: { thread: Thread }) {
       <div className="flex w-9 shrink-0 flex-col items-center pt-0.5 text-ink-3 sm:w-11">
         <Icon name="chevron-up" size={16} />
         <span className="text-[16px] font-extrabold text-ink">{thread.upvotes}</span>
-        <span className="text-[10px] uppercase tracking-wide">votes</span>
+        <span className="text-[11px] uppercase tracking-wide">votes</span>
       </div>
 
       {/* content */}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px]">
-          <span className={`border-[1.5px] border-ink px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${KIND_STYLE[thread.kind]}`}>
+          <span className={`border-[1.5px] border-ink px-1.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${KIND_STYLE[thread.kind]}`}>
             {KIND_LABEL[thread.kind]}
           </span>
           {solved && (

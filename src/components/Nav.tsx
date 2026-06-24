@@ -29,7 +29,7 @@ export default async function Nav() {
         <div className="ml-auto flex items-center gap-2">
           <Link
             href="/ask"
-            className="hidden border-2 border-ink bg-ink px-3.5 py-1.5 text-sm font-bold text-surface transition-colors hover:bg-ink/90 sm:inline-flex"
+            className="hidden border-2 border-ink bg-surface px-3.5 py-1.5 text-sm font-bold text-ink transition-colors hover:bg-surface-muted sm:inline-flex"
           >
             Ask the swarm
           </Link>
