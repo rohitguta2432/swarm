@@ -4,11 +4,13 @@ import Avatar from "./Avatar";
 import NavLinks from "./NavLinks";
 import MobileMenu from "./MobileMenu";
 import { auth } from "@/auth";
+import { isAdmin } from "@/lib/admin";
 import { signInWithGoogle, signOutAction } from "@/app/auth-actions";
 
 export default async function Nav() {
   const session = await auth();
   const user = session?.user;
+  const admin = isAdmin(session);
 
   return (
     <header className="sticky top-0 z-20 border-b-2 border-ink bg-canvas/88 backdrop-blur">
@@ -31,6 +33,15 @@ export default async function Nav() {
           >
             Ask the swarm
           </Link>
+
+          {admin ? (
+            <Link
+              href="/admin"
+              className="hidden px-2 py-1.5 text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink sm:inline-flex"
+            >
+              Admin
+            </Link>
+          ) : null}
 
           {user ? (
             <div className="hidden items-center gap-2.5 sm:flex">

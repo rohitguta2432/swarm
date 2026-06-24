@@ -76,3 +76,43 @@ create index if not exists swarm_links_created_idx
 
 -- Lock it down: enable RLS, add no policies → public/anon key has zero access.
 alter table swarm_links enable row level security;
+
+
+-- Swarm — admin activity log (login + content events).
+-- Same service-role-only contract as the tables above: the app writes via the
+-- server-only service-role client (src/lib/activity.ts), so RLS stays ON with NO
+-- public policies — the anon/public key can neither read nor write. Only the
+-- server (service role, which bypasses RLS) inserts events and the gated /admin
+-- dashboard (src/app/admin/page.tsx) selects them. Stores user email (PII) — it
+-- is readable ONLY by an admin (ADMIN_EMAILS) through the server, never the browser.
+create table if not exists swarm_activity (
+  id         uuid primary key default gen_random_uuid(),
+  email      text not null,
+  name       text,
+  image      text,
+  action     text not null,            -- 'login' | 'new_thread' | 'reply' | 'new_link'
+  detail     text,                     -- thread title / link title / thread id (nullable)
+  created_at timestamptz not null default now()
+);
+
+create index if not exists swarm_activity_created_idx
+  on swarm_activity (created_at desc);
+create index if not exists swarm_activity_email_idx
+  on swarm_activity (email, created_at desc);
+
+-- Lock it down: enable RLS, add no policies → public/anon key has zero access.
+alter table swarm_activity enable row level security;
+
+-- Exact distinct-user count for the admin dashboard, computed server-side so the
+-- app never transfers rows or caps the scan (a client-side `select email` would be
+-- bounded by PostgREST's row limit and silently undercount at scale). Called via
+-- supabase.rpc("swarm_unique_login_users") from src/lib/activity.ts.
+create or replace function swarm_unique_login_users()
+returns integer language sql stable as $$
+  select count(distinct email)::int from swarm_activity where action = 'login'
+$$;
+
+-- Same no-public-access contract as the table: only the server (service role) may
+-- execute it; anon/authenticated (the browser keys) cannot.
+revoke all on function swarm_unique_login_users() from public, anon, authenticated;
+grant execute on function swarm_unique_login_users() to service_role;

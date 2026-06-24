@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { summarizeArticle } from "@/lib/ai";
 import { addLink } from "@/lib/news";
+import { logActivity } from "@/lib/activity";
 
 // Deterministic avatar hue from a string (so a user's chip color is stable).
 function hueFrom(seed: string): number {
@@ -131,6 +132,14 @@ export async function submitLink(formData: FormData) {
     authorImage: session.user.image ?? null,
     avatarHue: hueFrom(session.user.email ?? session.user.name ?? "swarm"),
     tags,
+  });
+
+  await logActivity({
+    email: session.user.email,
+    name: session.user.name,
+    image: session.user.image,
+    action: "new_link",
+    detail: title,
   });
 
   revalidatePath("/news");

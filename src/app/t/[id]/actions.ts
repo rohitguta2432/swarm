@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { addReply } from "@/lib/replies";
+import { logActivity } from "@/lib/activity";
 
 // Deterministic avatar hue from a string (so a user's chip color is stable).
 function hueFrom(seed: string): number {
@@ -25,6 +26,14 @@ export async function postReply(formData: FormData) {
     authorImage: session.user.image ?? null,
     avatarHue: hueFrom(session.user.email ?? session.user.name ?? "swarm"),
     body: body.slice(0, 4000),
+  });
+
+  await logActivity({
+    email: session.user.email,
+    name: session.user.name,
+    image: session.user.image,
+    action: "reply",
+    detail: threadId,
   });
 
   revalidatePath(`/t/${threadId}`);

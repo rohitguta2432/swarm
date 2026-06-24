@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import MobileAskBar from "@/components/MobileAskBar";
 import { jsonLd, organizationLd, webSiteLd } from "@/lib/jsonld";
@@ -85,6 +86,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </div>
         </footer>
         <MobileAskBar />
+        {/* Vercel Web Analytics — aggregate, anonymous page-view traffic (top pages,
+            referrers, devices). Per-user activity is tracked separately in /admin. */}
+        <Analytics />
       </body>
     </html>
   );

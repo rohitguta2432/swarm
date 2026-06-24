@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { generateAnswer } from "@/lib/ai";
 import { addThread } from "@/lib/threads";
+import { logActivity } from "@/lib/activity";
 import type { ThreadKind } from "@/lib/types";
 
 // Deterministic avatar hue from a string (so a user's chip color is stable).
@@ -52,6 +53,14 @@ export async function createThread(formData: FormData) {
     avatarHue: hueFrom(session.user.email ?? session.user.name ?? "swarm"),
     tags,
     aiAnswer: ai,
+  });
+
+  await logActivity({
+    email: session.user.email,
+    name: session.user.name,
+    image: session.user.image,
+    action: "new_thread",
+    detail: title,
   });
 
   revalidatePath("/");
