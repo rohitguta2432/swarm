@@ -13,7 +13,7 @@ function ShareButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)] disabled:opacity-40 disabled:shadow-none"
+      className="inline-flex h-11 items-center gap-1.5 rounded-[10px] bg-accent px-5 text-sm font-bold text-white shadow-[var(--shadow-cta)] transition-colors hover:bg-accent-hover disabled:opacity-40 disabled:shadow-none"
     >
       {pending ? "Summarizing…" : "Share to the feed"}
       {!pending && <Icon name="arrow-right" size={16} />}
@@ -26,11 +26,11 @@ function ShareButton() {
 // signed-out users see a sign-in prompt instead of a throwing action.
 export default function NewsSubmit({ signedIn }: { signedIn: boolean }) {
   const inputCls =
-    "w-full border-2 border-ink bg-surface p-3 text-[16px] text-ink outline-none transition-shadow placeholder:text-ink-3 focus:shadow-[var(--shadow-hard-sm)]";
+    "w-full rounded-[12px] border border-border bg-surface p-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60";
 
   if (!signedIn) {
     return (
-      <div className="flex flex-col gap-3 border-2 border-ink bg-surface p-5 shadow-[var(--shadow-hard)] sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-[16px] border border-border bg-surface p-5 shadow-[var(--shadow-xs)] sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[14px] text-ink-2">
           <span className="font-semibold text-ink">Sign in to share a link</span> — Swarm&apos;s AI
           auto-summarizes it for the feed.
@@ -38,7 +38,7 @@ export default function NewsSubmit({ signedIn }: { signedIn: boolean }) {
         <form action={signInWithGoogle} className="shrink-0">
           <button
             type="submit"
-            className="inline-flex h-11 items-center gap-2 border-2 border-ink bg-surface px-4 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
+            className="inline-flex h-11 items-center gap-2 rounded-[10px] border border-border bg-surface px-4 text-sm font-bold text-ink transition-colors hover:border-accent/50 hover:bg-surface-muted"
           >
             <GoogleGlyph /> Continue with Google
           </button>
@@ -48,7 +48,7 @@ export default function NewsSubmit({ signedIn }: { signedIn: boolean }) {
   }
 
   return (
-    <div className="space-y-3 border-2 border-ink bg-surface p-5 shadow-[var(--shadow-hard)]">
+    <div className="space-y-3 rounded-[16px] border border-border bg-surface p-5 shadow-[var(--shadow-xs)]">
       <h2 className="font-display text-[18px] font-bold tracking-[-0.01em] text-ink">
         Share an article
       </h2>

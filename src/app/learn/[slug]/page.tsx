@@ -83,13 +83,13 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       </Link>
 
       {/* Header */}
-      <header className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:p-5">
+      <header className="rounded-[18px] border border-border bg-surface p-5 shadow-[var(--shadow-xs)] sm:p-6">
         <div className="mb-2 flex items-center gap-2 text-[12px]">
-          <span className="border-[1.5px] border-ink bg-surface-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink-2">
+          <span className="rounded-md bg-surface-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink-2">
             Knowledge
           </span>
         </div>
-        <h1 className="font-display text-[26px] font-bold leading-tight tracking-[-0.02em] text-ink">
+        <h1 className="font-display text-[28px] font-extrabold leading-tight tracking-[-0.025em] text-ink">
           {topic.title}
         </h1>
         <p className="mt-2 text-[16px] leading-relaxed text-ink-2">{topic.summary}</p>
@@ -103,7 +103,7 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       {/* Sections */}
       <section className="space-y-3">
         {topic.sections.map((s, i) => (
-          <div key={i} className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:p-5">
+          <div key={i} className="rounded-[16px] border border-border bg-surface p-5 shadow-[var(--shadow-xs)] sm:p-6">
             <h2 className="font-display text-[18px] font-bold leading-snug tracking-[-0.01em] text-ink">
               {s.heading}
             </h2>
@@ -116,17 +116,17 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       {relatedTopics.length > 0 && (
         <section>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+            <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
               Related patterns
             </h2>
-            <span className="h-0.5 flex-1 bg-ink" />
+            <span className="h-px flex-1 bg-border" />
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {relatedTopics.map((t) => (
               <Link
                 key={t.id}
                 href={`/learn/${t.id}`}
-                className="group block border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]"
+                className="group block rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)] transition-colors hover:border-accent/40 hover:shadow-[var(--shadow-glow)]"
               >
                 <h3 className="text-[15px] font-bold leading-snug text-ink group-hover:text-accent-ink">
                   {t.title}
@@ -142,17 +142,17 @@ export default async function TopicPage({ params }: { params: Promise<{ slug: st
       {related.length > 0 && (
         <section>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+            <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
               Related threads
             </h2>
-            <span className="h-0.5 flex-1 bg-ink" />
+            <span className="h-px flex-1 bg-border" />
           </div>
           <div className="space-y-3">
             {related.map((t) => (
               <Link
                 key={t.id}
                 href={`/t/${t.id}`}
-                className="group block border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]"
+                className="group block rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)] transition-colors hover:border-accent/40 hover:shadow-[var(--shadow-glow)]"
               >
                 <h3 className="text-[15px] font-bold leading-snug text-ink group-hover:text-accent-ink">
                   {t.title}

@@ -39,14 +39,14 @@ export default async function LiveRoomPage({ params }: { params: Promise<{ room:
 
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-[12px]">
-          <span className="border-[1.5px] border-ink bg-surface-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink-2">
+          <span className="rounded-md bg-surface-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink-2">
             Live room
           </span>
         </div>
-        <h1 className="font-display text-[26px] font-bold leading-tight tracking-[-0.02em] text-ink">
+        <h1 className="font-display text-[28px] font-extrabold leading-tight tracking-[-0.025em] text-ink">
           #{room}
         </h1>
-        <p className="max-w-xl text-[15px] text-ink-2">
+        <p className="max-w-xl text-[15px] leading-relaxed text-ink-2">
           Ephemeral real-time chat — presence and messages are live for everyone here now and aren&apos;t
           stored. Say hi, drop a link, work a problem in the open.
         </p>

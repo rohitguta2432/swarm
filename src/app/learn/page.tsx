@@ -17,7 +17,7 @@ function TopicCard({ t }: { t: KnowledgeTopic }) {
   return (
     <Link
       href={`/learn/${t.id}`}
-      className="group flex flex-col gap-2 border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]"
+      className="group flex flex-col gap-2 rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)] transition-colors hover:border-accent/40 hover:shadow-[var(--shadow-glow)]"
     >
       <h3 className="font-display text-[17px] font-bold leading-snug tracking-[-0.01em] text-ink group-hover:text-accent-ink">
         {t.title}
@@ -51,10 +51,10 @@ export default function LearnPage() {
       </Link>
 
       <div className="space-y-2">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.02em] text-ink">
+        <h1 className="font-display text-[30px] font-extrabold tracking-[-0.025em] text-ink">
           Learn: building AI agents
         </h1>
-        <p className="max-w-2xl text-[15px] text-ink-2">
+        <p className="max-w-2xl text-[15px] leading-relaxed text-ink-2">
           Two tracks. <span className="font-medium text-accent-ink">Design patterns</span> are how you{" "}
           build an agent — prompt chaining, routing, reflection, multi-agent, and more.{" "}
           <span className="font-medium text-accent-ink">Operational practices</span> are how you run it in
@@ -66,10 +66,10 @@ export default function LearnPage() {
       {patterns.length > 0 && (
         <section className="space-y-3">
           <div className="flex items-center gap-3">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+            <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
               Design patterns
             </h2>
-            <span className="h-0.5 flex-1 bg-ink" />
+            <span className="h-px flex-1 bg-border" />
             <span className="shrink-0 text-[12px] font-medium text-ink-3">{patterns.length} patterns</span>
           </div>
           <p className="max-w-2xl text-[13px] text-ink-3">
@@ -88,10 +88,10 @@ export default function LearnPage() {
       {operational.length > 0 && (
         <section className="space-y-3">
           <div className="flex items-center gap-3">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+            <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
               Operational practices
             </h2>
-            <span className="h-0.5 flex-1 bg-ink" />
+            <span className="h-px flex-1 bg-border" />
             <span className="shrink-0 text-[12px] font-medium text-ink-3">{operational.length} topics</span>
           </div>
           <p className="max-w-2xl text-[13px] text-ink-3">

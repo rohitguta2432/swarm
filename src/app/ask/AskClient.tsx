@@ -20,7 +20,7 @@ function PostButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)] disabled:opacity-40 disabled:shadow-none"
+      className="inline-flex h-11 items-center gap-1.5 rounded-[10px] bg-accent px-5 text-sm font-bold text-white shadow-[var(--shadow-cta)] transition-colors hover:bg-accent-hover disabled:opacity-40 disabled:shadow-none"
     >
       {pending ? "Posting to the feed…" : "Post to the feed"}
       {!pending && <Icon name="arrow-right" size={16} />}
@@ -60,7 +60,7 @@ export default function AskClient({ signedIn }: { signedIn: boolean }) {
   }
 
   const inputCls =
-    "w-full border-2 border-ink bg-surface p-3 text-[16px] text-ink outline-none transition-shadow placeholder:text-ink-3 focus:shadow-[var(--shadow-hard-sm)]";
+    "w-full rounded-[12px] border border-border bg-surface p-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60";
 
   return (
     <div className="space-y-6">
@@ -69,8 +69,8 @@ export default function AskClient({ signedIn }: { signedIn: boolean }) {
       </Link>
 
       <div className="space-y-2">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.02em] text-ink">Ask the swarm</h1>
-        <p className="text-[15px] text-ink-2">
+        <h1 className="font-display text-[30px] font-extrabold tracking-[-0.025em] text-ink">Ask the swarm</h1>
+        <p className="text-[15px] leading-relaxed text-ink-2">
           You&apos;ll get an <span className="font-medium text-accent-ink">instant AI answer</span>{" "}
           first — then real builders refine it. Be specific: paste the error, the config, the log line.
         </p>
@@ -96,7 +96,7 @@ export default function AskClient({ signedIn }: { signedIn: boolean }) {
               type="button"
               key={t}
               onClick={() => setBody((b) => (b.includes(`#${t}`) ? b : `${b}${b ? " " : ""}#${t}`))}
-              className="min-h-[36px] border-2 border-ink bg-surface px-2.5 text-[13px] font-semibold text-ink-2 transition-colors hover:bg-accent hover:text-ink"
+              className="min-h-[36px] rounded-lg border border-border bg-surface px-2.5 text-[13px] font-semibold text-ink-2 transition-colors hover:border-accent/50 hover:bg-accent-subtle hover:text-accent-ink"
             >
               #{t}
             </button>
@@ -105,7 +105,7 @@ export default function AskClient({ signedIn }: { signedIn: boolean }) {
         <button
           type="submit"
           disabled={loading || !title.trim()}
-          className="inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)] disabled:opacity-40 disabled:shadow-none"
+          className="inline-flex h-11 items-center gap-1.5 rounded-[10px] bg-accent px-5 text-sm font-bold text-white shadow-[var(--shadow-cta)] transition-colors hover:bg-accent-hover disabled:opacity-40 disabled:shadow-none"
         >
           {loading ? "Asking the swarm…" : "Get an instant answer"}
           {!loading && <Icon name="arrow-right" size={16} />}
@@ -113,36 +113,36 @@ export default function AskClient({ signedIn }: { signedIn: boolean }) {
       </form>
 
       {error && (
-        <div className="border-2 border-danger bg-danger-bg p-4 text-sm font-medium text-danger">
+        <div className="rounded-[12px] border border-danger/30 bg-danger-bg p-4 text-sm font-medium text-danger">
           {error}
         </div>
       )}
 
       {loading && (
-        <div className="border-2 border-ink bg-accent-subtle p-4 text-sm font-medium text-accent-ink">
+        <div className="rounded-[12px] border border-border bg-accent-subtle p-4 text-sm font-medium text-accent-ink">
           Swarm AI is drafting a first answer…
         </div>
       )}
 
       {answer && (
         <div className="space-y-3">
-          <div className="border-2 border-ink border-l-[6px] border-l-accent bg-accent-subtle p-4 shadow-[var(--shadow-hard)] sm:p-5">
+          <div className="rounded-[16px] border border-border border-l-[5px] border-l-accent bg-accent-subtle p-4 shadow-[var(--shadow-xs)] sm:p-5">
             <div className="mb-3 flex flex-wrap items-center gap-2 text-[12px]">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#fef3c7] text-accent-ink">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-white">
                 <Icon name="spark" size={14} />
               </span>
-              <span className="border-[1.5px] border-ink bg-[#fef3c7] px-2 py-0.5 font-bold uppercase tracking-wide text-[#78350f]">
+              <span className="rounded-md bg-accent/15 px-2 py-0.5 font-bold uppercase tracking-wide text-accent-ink">
                 Swarm AI · answered first
               </span>
               <span className="text-ink-3">
                 {answer.model} · {(answer.tookMs / 1000).toFixed(1)}s
               </span>
             </div>
-            <Markish text={answer.text} className="text-[15px] leading-relaxed text-[#27272a]" />
+            <Markish text={answer.text} className="text-[15px] leading-relaxed text-ink-2" />
           </div>
 
           {signedIn ? (
-            <div className="flex flex-col gap-2 border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:flex-row sm:items-center sm:justify-between">
               <p className="text-[13px] text-ink-2">
                 Looks right? <span className="font-semibold text-ink">Post it to the feed</span> so the
                 swarm can refine it.
@@ -155,7 +155,7 @@ export default function AskClient({ signedIn }: { signedIn: boolean }) {
               </form>
             </div>
           ) : (
-            <div className="flex flex-col gap-3 border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:flex-row sm:items-center sm:justify-between">
               <p className="text-[13px] text-ink-2">
                 <span className="font-semibold text-ink">Sign in to post</span> this to the feed — your
                 thread keeps this AI answer.
@@ -163,7 +163,7 @@ export default function AskClient({ signedIn }: { signedIn: boolean }) {
               <form action={signInWithGoogle} className="shrink-0">
                 <button
                   type="submit"
-                  className="inline-flex h-11 items-center gap-2 border-2 border-ink bg-surface px-4 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
+                  className="inline-flex h-11 items-center gap-2 rounded-[10px] border border-border bg-surface px-4 text-sm font-bold text-ink transition-colors hover:border-accent/50 hover:bg-surface-muted"
                 >
                   <GoogleGlyph /> Continue with Google
                 </button>

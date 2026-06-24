@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import Avatar from "./Avatar";
+import Icon from "./Icon";
 import NavLinks from "./NavLinks";
 import MobileMenu from "./MobileMenu";
 import { auth } from "@/auth";
@@ -13,31 +14,35 @@ export default async function Nav() {
   const admin = isAdmin(session);
 
   return (
-    <header className="sticky top-0 z-20 border-b-2 border-ink bg-canvas/88 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-3xl items-center gap-2 px-4 sm:gap-3 sm:px-6">
-        <MobileMenu user={user ? { name: user.name, image: user.image } : null} />
+    <header className="sticky top-0 z-20 border-b border-border bg-canvas/80 backdrop-blur-lg">
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-10">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <MobileMenu user={user ? { name: user.name, image: user.image } : null} />
 
-        <Link href="/" className="flex items-center gap-2 font-display font-bold tracking-tight text-ink">
-          <Logo />
-          <span className="text-[17px]">
-            Swarm<span className="text-accent-ink">.</span>
-          </span>
-        </Link>
+          <Link href="/" className="flex items-center gap-2.5 text-ink">
+            <Logo size={30} />
+            <span className="text-[22px] font-extrabold tracking-[-0.03em]">
+              Swarm<span className="text-accent">.</span>
+            </span>
+          </Link>
+        </div>
 
         <NavLinks />
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="flex items-center gap-3 sm:gap-4">
           <Link
             href="/ask"
-            className="hidden border-2 border-ink bg-surface px-3.5 py-1.5 text-sm font-bold text-ink transition-colors hover:bg-surface-muted sm:inline-flex"
+            className="hidden items-center gap-2 rounded-[10px] bg-accent px-[18px] py-[11px] text-[14.5px] font-bold text-white shadow-[var(--shadow-cta)] transition-colors hover:bg-accent-hover sm:inline-flex"
           >
-            Ask the swarm
+            Ask the swarm <Icon name="arrow-right" size={15} />
           </Link>
+
+          <div className="hidden h-[22px] w-px bg-black/10 sm:block" />
 
           {admin ? (
             <Link
               href="/admin"
-              className="hidden px-2 py-1.5 text-sm font-semibold text-ink-2 transition-colors hover:text-accent-ink sm:inline-flex"
+              className="hidden text-[14px] font-medium text-ink-2 transition-colors hover:text-accent-ink sm:inline-flex"
             >
               Admin
             </Link>
@@ -45,11 +50,11 @@ export default async function Nav() {
 
           {user ? (
             <div className="hidden items-center gap-2.5 sm:flex">
-              <Avatar name={user.name ?? "you"} hue={40} size={28} image={user.image} />
+              <Avatar name={user.name ?? "you"} hue={145} size={32} image={user.image} />
               <form action={signOutAction}>
                 <button
                   type="submit"
-                  className="px-2 py-1.5 text-sm font-semibold text-ink-2 transition-colors hover:text-ink"
+                  className="text-[14px] font-medium text-ink-2 transition-colors hover:text-ink"
                 >
                   Sign out
                 </button>
@@ -59,7 +64,7 @@ export default async function Nav() {
             <form action={signInWithGoogle} className="hidden sm:block">
               <button
                 type="submit"
-                className="border-2 border-ink px-3 py-1.5 text-sm font-bold text-ink transition-colors hover:bg-ink hover:text-surface"
+                className="rounded-[10px] border border-border bg-surface px-4 py-2 text-[14px] font-bold text-ink transition-colors hover:border-accent/50 hover:bg-surface-muted"
               >
                 Sign in
               </button>

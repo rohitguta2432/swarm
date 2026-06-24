@@ -54,8 +54,8 @@ export default async function AdminPage() {
       </Link>
 
       <div className="space-y-2">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.02em] text-ink">Admin</h1>
-        <p className="max-w-xl text-[15px] text-ink-2">
+        <h1 className="font-display text-[30px] font-extrabold tracking-[-0.025em] text-ink">Admin</h1>
+        <p className="max-w-xl text-[15px] leading-relaxed text-ink-2">
           Who&apos;s signing in and what the swarm is doing. Aggregate page traffic lives in your{" "}
           <a
             href="https://vercel.com/dashboard"
@@ -70,7 +70,7 @@ export default async function AdminPage() {
       {/* Stat cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {cards.map((c) => (
-          <div key={c.label} className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)]">
+          <div key={c.label} className="rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)]">
             <div className="font-display text-[28px] font-bold tabular-nums leading-none text-ink">{c.value}</div>
             <div className="mt-1.5 text-[13px] font-semibold text-ink">{c.label}</div>
             <div className="text-[11px] text-ink-3">{c.hint}</div>
@@ -82,11 +82,11 @@ export default async function AdminPage() {
       <div className="space-y-3">
         <h2 className="font-display text-[18px] font-bold text-ink">Recent activity</h2>
         {events.length === 0 ? (
-          <div className="border-2 border-ink bg-surface p-5 text-[14px] text-ink-2 shadow-[var(--shadow-hard)]">
+          <div className="rounded-[16px] border border-border bg-surface p-5 text-[14px] text-ink-2 shadow-[var(--shadow-xs)]">
             No activity yet. Events appear here as users sign in and post.
           </div>
         ) : (
-          <ul className="divide-y-2 divide-ink border-2 border-ink bg-surface shadow-[var(--shadow-hard)]">
+          <ul className="divide-y divide-border overflow-hidden rounded-[16px] border border-border bg-surface shadow-[var(--shadow-xs)]">
             {events.map((ev) => (
               <li key={ev.id} className="flex items-center gap-3 p-3 sm:px-4">
                 <Avatar name={ev.name ?? ev.email} hue={hueFrom(ev.email)} size={28} image={ev.image} />

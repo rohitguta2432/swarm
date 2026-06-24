@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import MobileAskBar from "@/components/MobileAskBar";
 import { jsonLd, organizationLd, webSiteLd } from "@/lib/jsonld";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+// Inter is a variable font, so a single import covers every weight (400–900)
+// the green design uses — no `weight` array needed (unlike the old Space Grotesk).
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
 
 // Root metadata. Docs read:
 //   node_modules/next/dist/docs/01-app/03-api-reference/04-functions/generate-metadata.md
@@ -67,15 +64,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full">
         {/* Sitewide structured data — Organization + WebSite (with SearchAction). */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(organizationLd()) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(webSiteLd()) }} />
         <Nav />
-        <main className="mx-auto max-w-3xl px-4 pb-24 pt-7 sm:px-6 sm:pb-12 sm:pt-9">{children}</main>
-        <footer className="mx-auto max-w-3xl px-4 pb-24 sm:px-6 sm:pb-10">
-          <div className="border-t-2 border-ink pt-6 text-[13px] text-ink-3">
+        <main className="mx-auto w-full max-w-[1240px] px-5 pb-28 pt-8 sm:px-10 sm:pt-10">{children}</main>
+        <footer className="mx-auto w-full max-w-[1240px] px-5 pb-24 sm:px-10 sm:pb-10">
+          <div className="border-t border-border pt-6 text-[13px] text-ink-3">
             Swarm · a home for agent builders · built by{" "}
             <a
               href="https://rohitraj.tech"

@@ -89,8 +89,8 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
       </Link>
 
       {/* Header */}
-      <header className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:p-5">
-        <h1 className="font-display text-[28px] font-bold leading-tight tracking-[-0.02em] text-ink before:text-ink-3 before:content-['#']">
+      <header className="rounded-[18px] border border-border bg-surface p-5 shadow-[var(--shadow-xs)] sm:p-6">
+        <h1 className="font-display text-[30px] font-extrabold leading-tight tracking-[-0.025em] text-ink before:text-ink-3 before:content-['#']">
           {tag}
         </h1>
         <p className="mt-2 text-[15px] leading-relaxed text-ink-2">
@@ -105,10 +105,10 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
       {threads.length > 0 && (
         <section>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+            <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
               Threads
             </h2>
-            <span className="h-0.5 flex-1 bg-ink" />
+            <span className="h-px flex-1 bg-border" />
           </div>
           <div className="space-y-3">
             {threads.map((t) => (
@@ -122,17 +122,17 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
       {topics.length > 0 && (
         <section>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+            <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
               Learn
             </h2>
-            <span className="h-0.5 flex-1 bg-ink" />
+            <span className="h-px flex-1 bg-border" />
           </div>
           <div className="space-y-3">
             {topics.map((t) => (
               <Link
                 key={t.id}
                 href={`/learn/${t.id}`}
-                className="group block border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-hard-amber)]"
+                className="group block rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)] transition-colors hover:border-accent/40 hover:shadow-[var(--shadow-glow)]"
               >
                 <h3 className="text-[15px] font-bold leading-snug text-ink group-hover:text-accent-ink">
                   {t.title}
@@ -148,19 +148,19 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
       {links.length > 0 && (
         <section>
           <div className="mb-3 flex items-center gap-3">
-            <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+            <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
               Reads
             </h2>
-            <span className="h-0.5 flex-1 bg-ink" />
+            <span className="h-px flex-1 bg-border" />
           </div>
           <div className="space-y-3">
             {links.map((link) => (
               <article
                 key={link.id}
-                className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)]"
+                className="rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)]"
               >
                 <div className="mb-2 flex flex-wrap items-center gap-2 text-[12px]">
-                  <span className="border-[1.5px] border-ink bg-surface-muted px-2 py-0.5 font-semibold text-ink-2">
+                  <span className="rounded-md bg-surface-muted px-2 py-0.5 font-semibold text-ink-2">
                     {link.sourceDomain}
                   </span>
                   <span className="text-ink-3">{link.createdAt}</span>
@@ -185,7 +185,7 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
       )}
 
       {/* Back-links — internal-linking + crawl path home */}
-      <div className="flex flex-wrap items-center gap-4 border-t-2 border-ink pt-4 text-sm font-semibold text-ink-2">
+      <div className="flex flex-wrap items-center gap-4 border-t border-border pt-4 text-sm font-semibold text-ink-2">
         <Link href="/" className="inline-flex items-center gap-1 transition-colors hover:text-accent-ink">
           <Icon name="chevron-up" size={14} /> Back to the swarm
         </Link>

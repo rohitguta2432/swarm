@@ -17,6 +17,10 @@ export default function MobileMenu({ user }: { user: User }) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
+  // Close the sheet on navigation. pathname (the URL) is the external system we're
+  // syncing to — and back/forward changes it without a click, so an effect is the
+  // correct hook, not the Link onClicks. setOpen bails out when already false.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
@@ -60,7 +64,7 @@ export default function MobileMenu({ user }: { user: User }) {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            className="absolute inset-x-0 top-0 border-b-2 border-ink bg-surface p-3 shadow-[var(--shadow-md)]"
+            className="absolute inset-x-0 top-0 rounded-b-2xl border-b border-border bg-surface p-3 shadow-[var(--shadow-md)]"
           >
             <div className="mb-1 flex items-center justify-between px-1">
               <span className="text-sm font-semibold text-ink-2">Menu</span>
@@ -92,13 +96,13 @@ export default function MobileMenu({ user }: { user: User }) {
             {user ? (
               <div className="flex items-center justify-between px-1">
                 <span className="flex items-center gap-2 text-sm text-ink-2">
-                  <Avatar name={user.name ?? "you"} hue={40} size={28} image={user.image} />
+                  <Avatar name={user.name ?? "you"} hue={145} size={28} image={user.image} />
                   {user.name ?? "Signed in"}
                 </span>
                 <form action={signOutAction}>
                   <button
                     type="submit"
-                    className="min-h-[44px] border-2 border-ink px-3 text-sm font-bold text-ink hover:bg-surface-muted"
+                    className="min-h-[44px] rounded-lg border border-border px-3 text-sm font-bold text-ink hover:bg-surface-muted"
                   >
                     Sign out
                   </button>

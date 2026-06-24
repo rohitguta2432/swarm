@@ -8,7 +8,7 @@ export default function TagLink({ tag }: { tag: string }) {
   return (
     <Link
       href={`/tag/${tag}`}
-      className="relative z-10 inline-block py-1 font-medium text-ink-2 transition-colors before:text-ink-3 before:content-['#'] hover:text-accent-ink"
+      className="relative z-10 inline-block rounded-md bg-[rgba(34,197,94,0.1)] px-2.5 py-1 text-[12.5px] font-medium text-accent-ink transition-colors before:text-accent-ink/55 before:content-['#'] hover:bg-[rgba(34,197,94,0.18)]"
     >
       {tag}
     </Link>

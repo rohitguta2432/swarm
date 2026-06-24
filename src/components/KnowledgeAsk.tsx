@@ -38,10 +38,10 @@ export default function KnowledgeAsk() {
   }
 
   const inputCls =
-    "w-full border-2 border-ink bg-surface p-3 text-[16px] text-ink outline-none transition-shadow placeholder:text-ink-3 focus:shadow-[var(--shadow-hard-sm)]";
+    "w-full rounded-[12px] border border-border bg-surface p-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60";
 
   return (
-    <div className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:p-5">
+    <div className="rounded-[18px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)] sm:p-5">
       <div className="mb-3 space-y-1">
         <h2 className="font-display text-[20px] font-bold tracking-[-0.01em] text-ink">
           Ask the knowledge base
@@ -63,7 +63,7 @@ export default function KnowledgeAsk() {
         <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="inline-flex h-11 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)] disabled:opacity-40 disabled:shadow-none"
+          className="inline-flex h-11 items-center gap-1.5 rounded-[10px] bg-accent px-5 text-sm font-bold text-white shadow-[var(--shadow-cta)] transition-colors hover:bg-accent-hover disabled:opacity-40 disabled:shadow-none"
         >
           {loading ? "Asking the knowledge base…" : "Get an instant answer"}
           {!loading && <Icon name="arrow-right" size={16} />}
@@ -71,31 +71,31 @@ export default function KnowledgeAsk() {
       </form>
 
       {error && (
-        <div className="mt-3 border-2 border-danger bg-danger-bg p-4 text-sm font-medium text-danger">
+        <div className="mt-3 rounded-[12px] border border-danger/30 bg-danger-bg p-4 text-sm font-medium text-danger">
           {error}
         </div>
       )}
 
       {loading && (
-        <div className="mt-3 border-2 border-ink bg-accent-subtle p-4 text-sm font-medium text-accent-ink">
+        <div className="mt-3 rounded-[12px] border border-border bg-accent-subtle p-4 text-sm font-medium text-accent-ink">
           Swarm AI is drafting an answer from the knowledge base…
         </div>
       )}
 
       {answer && (
-        <div className="mt-3 border-2 border-ink border-l-[6px] border-l-accent bg-accent-subtle p-4 shadow-[var(--shadow-hard)] sm:p-5">
+        <div className="mt-3 rounded-[16px] border border-border border-l-[5px] border-l-accent bg-accent-subtle p-4 shadow-[var(--shadow-xs)] sm:p-5">
           <div className="mb-3 flex flex-wrap items-center gap-2 text-[12px]">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#fef3c7] text-accent-ink">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-white">
               <Icon name="spark" size={14} />
             </span>
-            <span className="border-[1.5px] border-ink bg-[#fef3c7] px-2 py-0.5 font-bold uppercase tracking-wide text-[#78350f]">
+            <span className="rounded-md bg-accent/15 px-2 py-0.5 font-bold uppercase tracking-wide text-accent-ink">
               Swarm AI · knowledge base
             </span>
             <span className="text-ink-3">
               {answer.model} · {(answer.tookMs / 1000).toFixed(1)}s
             </span>
           </div>
-          <Markish text={answer.text} className="text-[15px] leading-relaxed text-[#27272a]" />
+          <Markish text={answer.text} className="text-[15px] leading-relaxed text-ink-2" />
         </div>
       )}
     </div>

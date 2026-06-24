@@ -10,7 +10,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="h-11 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)] disabled:opacity-40 disabled:shadow-none"
+      className="h-11 rounded-[10px] bg-accent px-5 text-sm font-bold text-white shadow-[var(--shadow-cta)] transition-colors hover:bg-accent-hover disabled:opacity-40 disabled:shadow-none"
     >
       {pending ? "Posting…" : "Post answer"}
     </button>
@@ -36,7 +36,7 @@ export default function Composer({ threadId }: { threadId: string }) {
         rows={3}
         required
         placeholder="Add to the answer, share a fix, or ask a follow-up…"
-        className="w-full resize-y border-2 border-ink bg-surface p-3 text-[16px] text-ink outline-none transition-shadow placeholder:text-ink-3 focus:shadow-[var(--shadow-hard-sm)]"
+        className="w-full resize-y rounded-[12px] border border-border bg-surface p-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60"
       />
       <div className="flex items-center justify-between">
         <span className="text-[12px] text-ink-3">Markdown supported</span>

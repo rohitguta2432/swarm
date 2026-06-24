@@ -89,7 +89,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
       </Link>
 
       {/* Question */}
-      <header className="mt-4 flex gap-3 border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)] sm:p-5">
+      <header className="mt-4 flex gap-3 rounded-[18px] border border-border bg-surface p-5 shadow-[var(--shadow-xs)] sm:p-6">
         <div className="hidden w-11 shrink-0 flex-col items-center pt-0.5 text-ink-3 sm:flex">
           <Icon name="chevron-up" size={16} />
           <span className="text-[16px] font-extrabold text-ink">{thread.upvotes}</span>
@@ -97,12 +97,12 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
         </div>
         <div className="min-w-0 flex-1 space-y-3">
           <div className="flex items-center gap-2 text-[12px]">
-            <span className="border-[1.5px] border-ink bg-surface-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink-2">
+            <span className="rounded-md bg-surface-muted px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-ink-2">
               {KIND_LABEL[thread.kind]}
             </span>
             <span className="text-ink-3">asked {thread.createdAt} by {thread.author}</span>
           </div>
-          <h1 className="font-display text-[26px] font-bold leading-tight tracking-[-0.02em] text-ink">
+          <h1 className="font-display text-[28px] font-extrabold leading-tight tracking-[-0.025em] text-ink">
             {thread.title}
           </h1>
           <p className="whitespace-pre-wrap text-[16px] leading-relaxed text-ink-2">{thread.body}</p>
@@ -123,10 +123,10 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
 
       {/* LARGE gap + labeled divider — humans refine */}
       <div className="mt-9 mb-4 flex items-center gap-3">
-        <h2 className="font-display text-sm font-bold uppercase tracking-wide text-ink">
+        <h2 className="font-display text-[13px] font-bold uppercase tracking-[0.12em] text-ink-2">
           {replies.length} {replies.length === 1 ? "reply" : "replies"} from the swarm
         </h2>
-        <span className="h-0.5 flex-1 bg-ink" />
+        <span className="h-px flex-1 bg-border" />
       </div>
 
       <section className="space-y-3">
@@ -134,20 +134,20 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
           r.isAccepted ? (
             <div
               key={r.id}
-              className="border-2 border-ink border-l-[6px] border-l-success bg-success-bg p-4 shadow-[var(--shadow-hard)]"
+              className="rounded-[16px] border border-border border-l-[5px] border-l-success bg-success-bg p-4 shadow-[var(--shadow-xs)]"
             >
               <div className="mb-2 flex items-center gap-2 text-[12px] text-ink-3">
                 <Avatar name={r.author} hue={r.avatarHue} size={20} image={r.image} />
                 <span className="font-medium text-ink">{r.author}</span>
                 <span>· {r.createdAt}</span>
-                <span className="ml-auto inline-flex items-center gap-1 border-[1.5px] border-ink bg-[#d6f0df] px-2 py-0.5 font-bold uppercase tracking-wide text-success">
+                <span className="ml-auto inline-flex items-center gap-1 rounded-md bg-success/15 px-2 py-0.5 font-bold uppercase tracking-wide text-success">
                   <Icon name="check" size={13} /> Accepted answer
                 </span>
               </div>
-              <Markish text={r.body} className="text-[15px] leading-relaxed text-[#0b3d2e]" />
+              <Markish text={r.body} className="text-[15px] leading-relaxed text-ink-2" />
             </div>
           ) : (
-            <div key={r.id} className="border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)]">
+            <div key={r.id} className="rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)]">
               <div className="mb-2 flex items-center gap-2 text-[12px] text-ink-3">
                 <Avatar name={r.author} hue={r.avatarHue} size={20} image={r.image} />
                 <span className="font-medium text-ink">{r.author}</span>
@@ -164,12 +164,12 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
         {session?.user ? (
           <Composer threadId={id} />
         ) : (
-          <div className="border-2 border-ink bg-surface p-5 text-center shadow-[var(--shadow-hard)]">
+          <div className="rounded-[16px] border border-border bg-surface p-5 text-center shadow-[var(--shadow-xs)]">
             <p className="mb-3 text-sm text-ink-2">Sign in to add your answer to the swarm.</p>
             <form action={signInWithGoogle} className="flex justify-center">
               <button
                 type="submit"
-                className="inline-flex min-h-[44px] items-center gap-2 border-2 border-ink bg-surface px-4 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-[10px] border border-border bg-surface px-4 text-sm font-bold text-ink transition-colors hover:border-accent/50 hover:bg-surface-muted"
               >
                 <GoogleGlyph /> Continue with Google
               </button>

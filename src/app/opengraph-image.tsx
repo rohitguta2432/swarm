@@ -5,9 +5,9 @@
 //   - Exporting `alt`, `size`, `contentType` + a default function returning ImageResponse auto-emits
 //     og:image (+ :type/:width/:height). File-based metadata has HIGHER priority than the metadata
 //     object (generate-metadata.md line 114), so layout.tsx does NOT hand-set openGraph.images.
-//   - No custom font: Satori (next/og's renderer) does not use next/font, and there is no bundled
-//     Space Grotesk .ttf in the repo (no-new-deps). We render with the default sans and lean on the
-//     on-brand layout instead — hard #111 borders, amber #f59e0b accent, warm #fbfbf6 canvas.
+//   - No custom font: Satori (next/og's renderer) does not use next/font, so we render with the
+//     default sans and lean on the on-brand layout instead. Satori also can't read CSS variables
+//     (no DOM/cascade), so the green design tokens are inlined as literal hex, mirroring globals.css.
 //   - Root segment: `params` is undefined/unused (opengraph-image.md table, lines 245-249).
 //
 // Also serves as the twitter:image via layout.tsx's twitter metadata (single asset, summary_large_image).
@@ -18,11 +18,13 @@ export const alt = "Swarm — AI answers first, for agent builders";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const INK = "#111111";
-const CANVAS = "#fbfbf6";
+// Green soft design tokens (literal values from src/app/globals.css — Satori can't read var()).
+const INK = "#0f1a14";
+const INK2 = "#44504a";
+const CANVAS = "#f6f8f4";
 const SURFACE = "#ffffff";
-const ACCENT = "#f59e0b";
-const INK2 = "#555555";
+const BORDER = "#e4eae2";
+const ACCENT = "#16a34a";
 
 export default function Image() {
   return new ImageResponse(
@@ -38,15 +40,16 @@ export default function Image() {
           fontFamily: "sans-serif",
         }}
       >
-        {/* Hard-bordered editorial card */}
+        {/* Soft editorial card — thin border + diffuse shadow + rounded corners */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             flex: 1,
             background: SURFACE,
-            border: `4px solid ${INK}`,
-            boxShadow: `16px 16px 0 ${INK}`,
+            border: `1px solid ${BORDER}`,
+            borderRadius: 28,
+            boxShadow: "0 24px 60px rgba(15,26,20,0.10)",
             padding: 56,
             justifyContent: "space-between",
           }}
@@ -59,7 +62,7 @@ export default function Image() {
                 width: 56,
                 height: 56,
                 background: ACCENT,
-                border: `4px solid ${INK}`,
+                borderRadius: 14,
               }}
             />
             <div style={{ display: "flex", fontSize: 44, fontWeight: 800, color: INK, letterSpacing: -1 }}>
@@ -68,7 +71,7 @@ export default function Image() {
           </div>
 
           {/* Headline */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div
               style={{
                 display: "flex",
@@ -88,9 +91,9 @@ export default function Image() {
                 style={{
                   display: "flex",
                   background: ACCENT,
-                  color: INK,
-                  padding: "4px 14px",
-                  border: `3px solid ${INK}`,
+                  color: SURFACE,
+                  padding: "8px 18px",
+                  borderRadius: 12,
                 }}
               >
                 for agent builders

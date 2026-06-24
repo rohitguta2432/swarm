@@ -14,12 +14,17 @@ export const alt = "A thread on Swarm — for agent builders";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const INK = "#111111";
-const CANVAS = "#fbfbf6";
+// Green soft design tokens (literal values from src/app/globals.css — Satori can't read var()).
+const INK = "#0f1a14";
+const INK2 = "#44504a";
+const INK3 = "#6a756e";
+const CANVAS = "#f6f8f4";
 const SURFACE = "#ffffff";
-const ACCENT = "#f59e0b";
-const INK2 = "#555555";
-const INK3 = "#7a7a72";
+const BORDER = "#e4eae2";
+const SURFACE_MUTED = "#eef3ec";
+const ACCENT = "#16a34a";
+const ACCENT_SUBTLE = "#e7f6ec";
+const ACCENT_INK = "#15803d";
 
 export default async function Image({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -48,8 +53,9 @@ export default async function Image({ params }: { params: Promise<{ id: string }
             flexDirection: "column",
             flex: 1,
             background: SURFACE,
-            border: `4px solid ${INK}`,
-            boxShadow: `16px 16px 0 ${INK}`,
+            border: `1px solid ${BORDER}`,
+            borderRadius: 28,
+            boxShadow: "0 24px 60px rgba(15,26,20,0.10)",
             padding: 56,
             justifyContent: "space-between",
           }}
@@ -57,7 +63,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           {/* Top row: wordmark + kind pill */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              <div style={{ display: "flex", width: 40, height: 40, background: ACCENT, border: `3px solid ${INK}` }} />
+              <div style={{ display: "flex", width: 40, height: 40, background: ACCENT, borderRadius: 11 }} />
               <div style={{ display: "flex", fontSize: 32, fontWeight: 800, color: INK, letterSpacing: -1 }}>
                 Swarm
               </div>
@@ -67,11 +73,11 @@ export default async function Image({ params }: { params: Promise<{ id: string }
                 display: "flex",
                 fontSize: 22,
                 fontWeight: 700,
-                color: INK,
+                color: INK2,
                 textTransform: "uppercase",
                 letterSpacing: 1,
-                border: `3px solid ${INK}`,
-                background: "#f4f3ee",
+                background: SURFACE_MUTED,
+                borderRadius: 10,
                 padding: "6px 16px",
               }}
             >
@@ -103,10 +109,10 @@ export default async function Image({ params }: { params: Promise<{ id: string }
                     display: "flex",
                     fontSize: 22,
                     fontWeight: 600,
-                    color: INK2,
-                    background: "#fef6e7",
-                    border: `2px solid ${INK}`,
-                    padding: "2px 12px",
+                    color: ACCENT_INK,
+                    background: ACCENT_SUBTLE,
+                    borderRadius: 8,
+                    padding: "4px 14px",
                   }}
                 >
                   #{t}

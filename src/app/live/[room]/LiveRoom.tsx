@@ -118,15 +118,15 @@ export default function LiveRoom({ room, me: signedInMe }: { room: string; me: M
   return (
     <div className="space-y-4">
       {!live && (
-        <div className="border-2 border-ink border-l-[6px] border-l-accent bg-accent-subtle p-3 text-[13px] font-medium text-accent-ink shadow-[var(--shadow-hard-sm)]">
+        <div className="rounded-[12px] border border-border border-l-[5px] border-l-accent bg-accent-subtle p-3 text-[13px] font-medium text-accent-ink shadow-[var(--shadow-xs)]">
           Realtime offline — set NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY to go live
         </div>
       )}
 
       {/* Presence bar */}
-      <div className="flex items-center gap-2 border-2 border-ink bg-surface px-4 py-2.5 text-[13px] shadow-[var(--shadow-hard-sm)]">
-        <span className="inline-flex items-center gap-1.5 border-[1.5px] border-ink bg-danger-bg px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-danger">
-          <span className="h-1.5 w-1.5 rounded-full bg-danger" />
+      <div className="flex items-center gap-2 rounded-[14px] border border-border bg-surface px-4 py-2.5 text-[13px] shadow-[var(--shadow-xs)]">
+        <span className="inline-flex items-center gap-1.5 rounded-md bg-amber-bg px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-amber-ink">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-dot motion-safe:animate-[swarm-pulse-dot_1.6s_ease-in-out_infinite]" />
           Live
         </span>
         <span className="font-bold text-ink">{hereCount}</span>
@@ -136,7 +136,7 @@ export default function LiveRoom({ room, me: signedInMe }: { room: string; me: M
       {/* Message list */}
       <div
         ref={listRef}
-        className="max-h-[420px] min-h-[220px] space-y-3 overflow-y-auto border-2 border-ink bg-surface p-4 shadow-[var(--shadow-hard)]"
+        className="max-h-[420px] min-h-[220px] space-y-3 overflow-y-auto rounded-[16px] border border-border bg-surface p-4 shadow-[var(--shadow-xs)]"
       >
         {messages.length === 0 ? (
           <p className="py-8 text-center text-[14px] text-ink-3">
@@ -175,13 +175,13 @@ export default function LiveRoom({ room, me: signedInMe }: { room: string; me: M
           rows={1}
           maxLength={1000}
           placeholder="Message the room…  (Enter to send, Shift+Enter for newline)"
-          className="min-h-[44px] w-full resize-none border-2 border-ink bg-surface p-3 text-[16px] text-ink outline-none transition-shadow placeholder:text-ink-3 focus:shadow-[var(--shadow-hard-sm)]"
+          className="min-h-[44px] w-full resize-none rounded-[12px] border border-border bg-surface p-3 text-[16px] text-ink outline-none transition-colors placeholder:text-ink-3 focus:border-accent/60"
         />
         <button
           type="button"
           onClick={send}
           disabled={!draft.trim()}
-          className="inline-flex h-11 shrink-0 items-center gap-1.5 border-2 border-ink bg-accent px-4 text-sm font-bold text-ink shadow-[var(--shadow-hard-sm)] transition-all hover:bg-accent-hover hover:shadow-[var(--shadow-hard)] disabled:opacity-40 disabled:shadow-none"
+          className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-[10px] bg-accent px-5 text-sm font-bold text-white shadow-[var(--shadow-cta)] transition-colors hover:bg-accent-hover disabled:opacity-40 disabled:shadow-none"
         >
           <Icon name="arrow-right" size={15} /> Send
         </button>

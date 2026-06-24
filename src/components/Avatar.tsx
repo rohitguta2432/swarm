@@ -20,7 +20,7 @@ export default function Avatar({
         width={size}
         height={size}
         referrerPolicy="no-referrer"
-        className="inline-block shrink-0 rounded-full border-[1.5px] border-ink object-cover"
+        className="inline-block shrink-0 rounded-full border border-black/10 object-cover"
         style={{ width: size, height: size }}
       />
     );
@@ -28,7 +28,7 @@ export default function Avatar({
   const initials = name.replace(/[^a-zA-Z0-9]/g, " ").trim().slice(0, 2).toUpperCase();
   return (
     <span
-      className="inline-flex shrink-0 items-center justify-center rounded-full border-[1.5px] border-ink font-semibold text-black"
+      className="inline-flex shrink-0 items-center justify-center rounded-full border border-black/10 font-semibold text-black"
       style={{
         width: size,
         height: size,

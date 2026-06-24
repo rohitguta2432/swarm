@@ -22,8 +22,8 @@ export default async function TagsPage() {
       </Link>
 
       <div className="space-y-2">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.02em] text-ink">Browse by tag</h1>
-        <p className="max-w-xl text-[15px] text-ink-2">
+        <h1 className="font-display text-[30px] font-extrabold tracking-[-0.025em] text-ink">Browse by tag</h1>
+        <p className="max-w-xl text-[15px] leading-relaxed text-ink-2">
           Every topic the <span className="font-medium text-accent-ink">swarm</span> is building around.
           Tap a tag to see the threads and curated reads on it.
         </p>
@@ -34,10 +34,10 @@ export default async function TagsPage() {
           <li key={tag}>
             <Link
               href={`/tag/${tag}`}
-              className="inline-flex items-center gap-1.5 border-2 border-ink bg-surface px-3 py-1.5 text-[14px] font-medium text-ink-2 shadow-[var(--shadow-hard)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent-ink hover:shadow-[var(--shadow-hard-amber)] before:text-ink-3 before:content-['#']"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-accent/25 bg-[rgba(34,197,94,0.1)] px-3 py-1.5 text-[14px] font-medium text-accent-ink shadow-[var(--shadow-xs)] transition-colors hover:bg-[rgba(34,197,94,0.18)] before:text-accent-ink/55 before:content-['#']"
             >
               {tag}
-              <span className="border-[1.5px] border-ink bg-surface-muted px-1.5 text-[11px] font-bold text-ink-2">
+              <span className="text-[11px] font-bold text-accent-ink/55">
                 {count}
               </span>
             </Link>

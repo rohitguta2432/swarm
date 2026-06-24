@@ -1,41 +1,50 @@
 @import "tailwindcss";
 
-/* ── Swarm — Bold Editorial Light ─────────────────────────────────────
-   Confident light theme: warm off-white canvas, hard 2px ink borders,
-   offset (non-blur) shadows, amber highlight blocks, display headings.
-   Amber stays split: --color-accent = FILLS only; --color-accent-ink = TYPE
-   (brand amber #F59E0B is only 2.15:1 on white — never use it as text). */
+/* ── Swarm — Soft Green (agent-builder community) ──────────────────────
+   Calm light theme on a faint green wash: white cards, hairline borders,
+   soft blurred shadows, emerald accents, Inter throughout.
+   Token NAMES are unchanged from the prior amber theme on purpose — every
+   existing `bg-canvas` / `border-ink` / `text-accent-ink` utility restyles
+   by swapping VALUES here, no markup churn.
+   Green stays split: --color-accent = FILLS only; --color-accent-ink = TYPE
+   (brand green #16a34a is ~3.4:1 on white — ok for large/icon, but links at
+   body size use --color-accent-ink #15803d to clear WCAG AA 4.5:1). */
 @theme {
-  --color-canvas: #fbfbf6;
+  --color-canvas: #f6f8f4;
   --color-surface: #ffffff;
-  --color-surface-muted: #f4f3ee;
-  --color-border: #e6e4dd;
+  --color-surface-muted: #eef3ec;
+  --color-border: #e4eae2;
 
-  --color-ink: #111111;   /* primary text + hard borders */
-  --color-ink-2: #555555; /* secondary  ~7:1 */
-  --color-ink-3: #6b6b64; /* muted/meta — darkened to clear WCAG AA 4.5:1 on canvas */
+  --color-ink: #0f1a14;   /* primary text + borders */
+  --color-ink-2: #44504a; /* secondary  ~8:1 */
+  --color-ink-3: #6a756e; /* muted/meta — clears AA 4.5:1 on canvas */
 
-  --color-accent: #f59e0b;        /* fills / CTA / highlight blocks / logo */
-  --color-accent-hover: #d97706;  /* fills only */
-  --color-accent-ink: #b45309;    /* amber TEXT / links  5.0:1 */
-  --color-accent-subtle: #fef6e7; /* AI block tint */
+  --color-accent: #16a34a;        /* fills / CTA / highlight / logo */
+  --color-accent-hover: #15803d;  /* fills hover */
+  --color-accent-ink: #15803d;    /* green TEXT / links  4.6:1 */
+  --color-accent-subtle: #e7f6ec; /* AI block tint */
 
   --color-success: #15803d;
-  --color-success-bg: #ecfdf3;
-  --color-info: #0c447c;          /* Question pill ink */
-  --color-info-bg: #e6f1fb;
-  --color-violet-ink: #3c3489;    /* Discussion pill */
-  --color-violet-bg: #eeedfe;
-  --color-lime-ink: #3b6d11;      /* Show & tell pill */
-  --color-lime-bg: #eaf3de;
-  --color-danger: #a32d2d;
-  --color-danger-bg: #fcebeb;
+  --color-success-bg: #e7f6ec;
+  --color-info: #1d4ed8;          /* Question pill ink */
+  --color-info-bg: #e8eefc;
+  --color-violet-ink: #7e22ce;    /* Discussion pill */
+  --color-violet-bg: #f3e9fd;
+  --color-lime-ink: #15803d;      /* Show & tell pill */
+  --color-lime-bg: #e7f6ec;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fdeaea;
+
+  /* Amber — now reserved for LIVE accents only (was the old brand color). */
+  --color-amber-ink: #b45309;
+  --color-amber-bg: #fcefd6;
+  --color-amber-dot: #d97706;
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-space-grotesk);
+  --font-display: var(--font-inter);
 }
 
 :root {
@@ -43,10 +52,15 @@
   --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 1px rgba(16, 24, 40, 0.03);
   --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
   --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08), 0 2px 6px rgba(16, 24, 40, 0.05);
-  /* Bold editorial: hard offset shadows (no blur) */
-  --shadow-hard-sm: 3px 3px 0 var(--color-ink);
-  --shadow-hard: 4px 4px 0 var(--color-ink);
-  --shadow-hard-amber: 6px 6px 0 var(--color-accent);
+  /* Soft green system: card lift + emerald CTA glow. */
+  --shadow-glow: 0 4px 16px rgba(22, 163, 74, 0.10);
+  --shadow-cta: 0 8px 22px rgba(22, 163, 74, 0.24);
+  /* Back-compat: the old hard-offset names now resolve to soft shadows, so
+     existing `shadow-[var(--shadow-hard)]` utilities restyle in place while
+     each page is migrated component-by-component. */
+  --shadow-hard-sm: var(--shadow-xs);
+  --shadow-hard: var(--shadow-sm);
+  --shadow-hard-amber: var(--shadow-glow);
 }
 
 html {
@@ -57,27 +71,39 @@ html {
 body {
   background: var(--color-canvas);
   color: var(--color-ink);
-  font-family: var(--font-geist-sans), Arial, system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   min-height: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Full-canvas dot grid — subtle dev-tool texture under the editorial layout. */
+/* Radial green wash — atmosphere behind everything, brightest up top. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -11;
+  pointer-events: none;
+  background: radial-gradient(ellipse 90% 60% at 50% -10%, #e6f7ec 0%, #f1f7ef 45%, #f6f8f4 100%);
+}
+
+/* Faint green dot grid — masked so it dissolves toward the lower edges. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -10;
   pointer-events: none;
-  background-image: radial-gradient(circle, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
-  background-size: 22px 22px;
+  background-image: radial-gradient(circle at 1px 1px, rgba(22, 163, 74, 0.08) 1px, transparent 0);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, #000 40%, transparent 100%);
 }
 
 ::selection {
-  background: rgba(245, 158, 11, 0.28);
+  background: rgba(34, 197, 94, 0.22);
 }
 
-/* One global focus ring — blue, distinct from amber, never invisible. */
+/* One global focus ring — blue, distinct from green, never invisible. */
 :focus-visible {
   outline: 2px solid #2563eb;
   outline-offset: 2px;
@@ -89,6 +115,50 @@ body::before {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Soft emerald scrollbar to match the calmer surface. */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(22, 163, 74, 0.2);
+  border: 3px solid var(--color-canvas);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(22, 163, 74, 0.35);
+}
+
+/* Swarm motion — live-presence rings + equalizer bars (used by the live rail). */
+@keyframes swarm-pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+@keyframes swarm-pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+@keyframes swarm-bars {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
